@@ -20,14 +20,12 @@
             background-color: #f8fafc;
         }
 
-        /* Modern Navbar */
         .navbar {
             backdrop-filter: blur(10px);
             background: var(--glass-bg);
             border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
 
-        /* Hero Section */
         .hero-section {
             padding: 160px 0 100px;
             background: radial-gradient(circle at top right, #e0e7ff 0%, #f8fafc 50%);
@@ -63,7 +61,6 @@
             box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.4);
         }
 
-        /* Mission/Vision Cards */
         .card-feature {
             border: none;
             border-radius: 24px;
@@ -88,7 +85,6 @@
             margin-bottom: 20px;
         }
 
-        /* Goals Section - Asymmetric Layout */
         .goals-section {
             background-color: #0f172a;
             color: white;
@@ -105,24 +101,6 @@
             color: #818cf8;
         }
 
-        /* Chips/Pills for Links */
-        .link-chip {
-            background: white;
-            border: 1px solid #e2e8f0;
-            padding: 10px 20px;
-            border-radius: 100px;
-            text-decoration: none;
-            color: #64748b;
-            transition: all 0.2s;
-        }
-
-        .link-chip:hover {
-            border-color: #6366f1;
-            color: #6366f1;
-            background: #f5f3ff;
-        }
-
-        /* Link Preview Card Style */
         .link-preview-card {
             display: flex;
             align-items: center;
@@ -155,11 +133,6 @@
             overflow: hidden;
         }
 
-        .link-thumbnail i {
-            font-size: 1.5rem;
-            color: #94a3b8;
-        }
-
         .link-content {
             overflow: hidden;
         }
@@ -186,14 +159,6 @@
             overflow: hidden;
         }
 
-        .link-url {
-            display: block;
-            font-size: 0.7rem;
-            color: #94a3b8;
-            text-transform: lowercase;
-            margin-top: 4px;
-        }
-
         .floating-image {
             animation: floating 6s ease-in-out infinite;
         }
@@ -208,6 +173,21 @@
             50% {
                 transform: translateY(-20px);
             }
+        }
+
+        /* Hero Image Container */
+        .hero-img-container {
+            width: 100%;
+            height: 450px;
+            border-radius: 2rem;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .hero-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
     </style>
 </head>
@@ -226,19 +206,33 @@
             <div class="row align-items-center">
                 <div class="col-lg-6">
                     <span class="section-tag mb-3 d-block">Welcome to the future</span>
-                    <h1 class="display-3 fw-bold mb-4" style="letter-spacing: -1px;">{{ $title }}</h1>
-                    <p class="lead text-muted mb-5" style="max-width: 90%;">{{ $description }}</p>
+                    <h1 class="display-3 fw-bold mb-4" style="letter-spacing: -1px;">
+                        {{ $title ?? 'Default Title' }}
+                    </h1>
+                    <p class="lead text-muted mb-5" style="max-width: 90%;">
+                        {{ $description ?? 'Default Description text goes here.' }}
+                    </p>
                     <div class="d-flex gap-3">
-                        <button class="btn btn-modern shadow-lg">{{ $button }}</button>
-                        <button class="btn btn-link text-dark fw-semibold text-decoration-none">Learn More <i
-                                class="bi bi-arrow-right"></i></button>
+                        <button class="btn btn-modern shadow-lg">{{ $button ?? 'Get Started' }}</button>
+                        <button class="btn btn-link text-dark fw-semibold text-decoration-none">
+                            Learn More <i class="bi bi-arrow-right"></i>
+                        </button>
                     </div>
                 </div>
+
                 <div class="col-lg-6 d-none d-lg-block">
                     <div class="floating-image">
-                        <div class="rounded-5 shadow-lg overflow-hidden"
-                            style="background: var(--primary-gradient); height: 450px; display: flex; align-items: center; justify-content: center;">
-                            <i class="bi bi-rocket-takeoff text-white" style="font-size: 10rem; opacity: 0.2;"></i>
+                        <div class="hero-img-container">
+                            @if(!empty($image))
+                                {{-- Displays the uploaded image from storage --}}
+                                <img src="{{ asset('storage/' . $image) }}" alt="Hero Image">
+                            @else
+                                {{-- Fallback placeholder if no image is uploaded --}}
+                                <div
+                                    style="background: var(--primary-gradient); height: 100%; display: flex; align-items: center; justify-content: center;">
+                                    <i class="bi bi-rocket-takeoff text-white" style="font-size: 10rem; opacity: 0.2;"></i>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -256,7 +250,7 @@
                         </div>
                         <h3 class="fw-bold">Our Mission</h3>
                         <p class="text-muted leading-relaxed">
-                            {{ $mission ?? 'We aim to redefine the industry standards through innovation and a relentless pursuit of excellence.' }}
+                            {{ $mission ?? 'We aim to redefine the industry standards through innovation.' }}
                         </p>
                     </div>
                 </div>
@@ -267,7 +261,7 @@
                         </div>
                         <h3 class="fw-bold">Our Vision</h3>
                         <p class="text-muted leading-relaxed">
-                            {{ $vision ?? 'To be the global leader in sustainable solutions, creating a better everyday life for people everywhere.' }}
+                            {{ $vision ?? 'To be the global leader in sustainable solutions.' }}
                         </p>
                     </div>
                 </div>
@@ -284,7 +278,7 @@
                 </div>
                 <div class="col-lg-8">
                     <p class="fs-5 opacity-75">
-                        {{ $goals ?? 'Our strategy is built on three pillars: Operational Excellence, Customer Intimacy, and Product Leadership. We invest heavily in R&D to stay ahead.' }}
+                        {{ $goals ?? 'Operational Excellence, Customer Intimacy, and Product Leadership.' }}
                     </p>
                 </div>
             </div>
@@ -299,7 +293,12 @@
             </div>
 
             <div class="row g-4">
-                @forelse($related_links ?? [] as $link)
+                {{-- Handle both arrays (API) and JSON strings (Direct DB) --}}
+                @php
+                    $links = is_array($related_links ?? []) ? ($related_links ?? []) : json_decode($related_links, true);
+                @endphp
+
+                @forelse($links ?? [] as $link)
                     <div class="col-lg-4 col-md-6">
                         <a href="#" class="link-preview-card">
                             <div class="link-thumbnail">
@@ -307,28 +306,21 @@
                             </div>
                             <div class="link-content">
                                 <span class="link-title">{{ $link }}</span>
-                                <span class="link-description">
-                                    View details and explore the resources regarding {{ $link }}.
-                                </span>
-                                <span class="link-url">
-                                    https://resource.link/{{ Str::slug($link) }}
-                                </span>
+                                <span class="link-description">Explore resources regarding {{ $link }}.</span>
+                                <span class="link-url">https://resource.link/{{ Str::slug($link) }}</span>
                             </div>
                         </a>
                     </div>
                 @empty
-                    <div class="col-12 text-center text-muted">
-                        No related resources available.
-                    </div>
+                    <div class="col-12 text-center text-muted">No related resources available.</div>
                 @endforelse
             </div>
         </div>
     </section>
 
-
     <footer class="py-4 border-top">
         <div class="container text-center text-muted small">
-            &copy; 2024 Your Modern Site. All rights reserved.
+            &copy; 2025 Your Modern Site. All rights reserved.
         </div>
     </footer>
 

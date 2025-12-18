@@ -11,6 +11,7 @@ class LandingPage extends Model
         'title',
         'description',
         'button',
+        'image',
         'mission',
         'vision',
         'goals',

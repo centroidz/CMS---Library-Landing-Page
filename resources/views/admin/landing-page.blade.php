@@ -20,6 +20,16 @@
                         </div>
 
                         <div class="mb-3">
+                            <label class="form-label fw-bold small text-uppercase">Hero Image</label>
+                            <input type="file" id="image" class="form-control" accept="image/*">
+                            <div id="imagePreviewWrapper" class="mt-2 {{ $page->image ? '' : 'd-none' }}">
+                                <img id="imgPreview" src="{{ $page->image ? asset('storage/' . $page->image) : '#' }}"
+                                    class="img-thumbnail" style="max-height: 150px;">
+                            </div>
+                            <div class="form-text">Recommended: 800x600px or similar ratio.</div>
+                        </div>
+
+                        <div class="mb-3">
                             <label class="form-label fw-bold small text-uppercase">Headline</label>
                             <input type="text" id="title" class="form-control" value="{{ $page->title }}">
                         </div>
@@ -51,17 +61,13 @@
                             <textarea id="goals" class="form-control" rows="6">{{ $page->goals }}</textarea>
                         </div>
 
-
                         <div class="mb-4">
                             <label class="form-label fw-bold small text-uppercase">Related Links</label>
-
                             <div id="relatedLinksWrapper"></div>
-
                             <button type="button" class="btn btn-sm btn-outline-primary mt-2" onclick="addLinkField()">
                                 <i class="bi bi-plus"></i> Add Link
                             </button>
                         </div>
-
 
                         <button onclick="savePage(this)" class="btn btn-primary w-100 py-2 shadow-sm">
                             <i class="bi bi-cloud-arrow-up me-2"></i> Save Changes
@@ -87,34 +93,20 @@
         const baseUrl = "{{ url('/') }}";
         const frame = document.getElementById('previewFrame');
 
-        const fields = [
-            'template',
-            'title',
-            'description',
-            'button',
-            'mission',
-            'vision',
-            'goals'
-        ];
+        const fields = ['template', 'title', 'description', 'button', 'mission', 'vision', 'goals'];
 
         /* ================= RELATED LINKS ================= */
-
         const relatedLinksWrapper = document.getElementById('relatedLinksWrapper');
 
         function addLinkField(value = '') {
             const div = document.createElement('div');
             div.className = 'input-group mb-2';
-
             div.innerHTML = `
-                <input type="text" class="form-control related-link"
-                       placeholder="e.g. E-Library"
-                       value="${value}">
-                <button class="btn btn-outline-danger" type="button"
-                        onclick="this.parentElement.remove(); updatePreview();">
-                    <i class="bi bi-trash"></i>
-                </button>
-            `;
-
+                    <input type="text" class="form-control related-link" placeholder="e.g. E-Library" value="${value}">
+                    <button class="btn btn-outline-danger" type="button" onclick="this.parentElement.remove(); updatePreview();">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                `;
             relatedLinksWrapper.appendChild(div);
             div.querySelector('input').addEventListener('input', updatePreview);
             updatePreview();
@@ -126,11 +118,23 @@
                 .filter(Boolean);
         }
 
-        /* ================= PREVIEW ================= */
+        /* ================= IMAGE PREVIEW LOGIC ================= */
+        document.getElementById('image').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    document.getElementById('imgPreview').src = event.target.result;
+                    document.getElementById('imagePreviewWrapper').classList.remove('d-none');
+                    updatePreview(); // Trigger preview update
+                };
+                reader.readAsDataURL(file);
+            }
+        });
 
+        /* ================= PREVIEW ================= */
         function updatePreview() {
             const params = new URLSearchParams();
-
             fields.forEach(f => {
                 params.append(f, document.getElementById(f).value);
             });
@@ -139,6 +143,9 @@
                 params.append('related_links[]', link);
             });
 
+            // Note: Iframe preview cannot show the NEWly selected image until upload,
+            // unless we send the Base64 (which is too large for URLs).
+            // The iframe will show the EXISTING saved image until Save is clicked.
             frame.src = `${baseUrl}/api/landing/preview?${params.toString()}`;
         }
 
@@ -146,28 +153,45 @@
             document.getElementById(f).addEventListener('input', updatePreview);
         });
 
-        /* ================= SAVE ================= */
-
+        /* ================= SAVE (USING FORMDATA) ================= */
         function savePage(btn) {
             const originalText = btn.innerHTML;
             btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Saving...';
             btn.disabled = true;
 
-            const data = {};
-            fields.forEach(f => data[f] = document.getElementById(f).value);
-            data.related_links = getRelatedLinks();
+            // Use FormData to allow file uploads
+            const formData = new FormData();
+
+            fields.forEach(f => {
+                formData.append(f, document.getElementById(f).value);
+            });
+
+            // Handle Related Links array
+            getRelatedLinks().forEach(link => {
+                formData.append('related_links[]', link);
+            });
+
+            // Handle Image File
+            const imageFile = document.getElementById('image').files[0];
+            if (imageFile) {
+                formData.append('image', imageFile);
+            }
 
             fetch(`${baseUrl}/api/landing/save`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',
                     'Accept': 'application/json'
+                    // Important: Do NOT set Content-Type header when using FormData
                 },
-                body: JSON.stringify(data)
+                body: formData
             })
                 .then(res => res.json())
-                .then(() => alert('Landing page updated!'))
+                .then(data => {
+                    alert('Landing page updated!');
+                    // Optional: Update iframe after save to show new image
+                    updatePreview();
+                })
                 .catch(() => alert('Save failed'))
                 .finally(() => {
                     btn.innerHTML = originalText;
@@ -176,9 +200,7 @@
         }
 
         /* ================= INIT ================= */
-
         const existingLinks = @json($page->related_links ?? []);
-
         if (existingLinks.length) {
             existingLinks.forEach(link => addLinkField(link));
         } else {
