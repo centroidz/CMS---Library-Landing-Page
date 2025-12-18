@@ -5,70 +5,78 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-4">
-                <div class="card border-0 shadow-sm">
-                    <div class="card-header bg-white py-3">
-                        <h5 class="mb-0 fw-bold">
-                            <i class="bi bi-pencil-square me-2 text-primary"></i>Page Builder
-                        </h5>
+            <div class="col-lg-4" style="height: calc(100vh - 120px); overflow-y: auto;">
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white py-3 sticky-top">
+                        <h5 class="mb-0 fw-bold text-primary"><i class="bi bi-pencil-square me-2"></i>Content Editor</h5>
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Template Style</label>
+                            <label class="form-label fw-bold small text-uppercase">Template</label>
                             <select id="template" class="form-select">
                                 <option value="hero-left" {{ $page->template == 'hero-left' ? 'selected' : '' }}>Hero Left
                                 </option>
-                                <option value="hero-center" {{ $page->template == 'hero-center' ? 'selected' : '' }}>Hero
-                                    Center</option>
-                                <option value="split-layout" {{ $page->template == 'split-layout' ? 'selected' : '' }}>Split
-                                    Layout</option>
                             </select>
-                            <div class="form-text">Choose the visual structure of your landing page.</div>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Headline Title</label>
+                            <label class="form-label fw-bold small text-uppercase">Headline</label>
                             <input type="text" id="title" class="form-control" value="{{ $page->title }}">
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Description Text</label>
-                            <textarea id="description" class="form-control" rows="4">{{ $page->description }}</textarea>
+                            <label class="form-label fw-bold small text-uppercase">Hero Description</label>
+                            <textarea id="description" class="form-control" rows="3">{{ $page->description }}</textarea>
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Call to Action (Button)</label>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold small text-uppercase">Button Text</label>
                             <input type="text" id="button" class="form-control" value="{{ $page->button }}">
                         </div>
 
-                        <hr class="my-4">
+                        <h6 class="fw-bold border-bottom pb-2 mb-3">Core Values</h6>
 
-                        <button onclick="savePage(this)" class="btn btn-primary w-100 shadow-sm py-2">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small text-uppercase">Mission</label>
+                            <textarea id="mission" class="form-control" rows="5">{{ $page->mission }}</textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small text-uppercase">Vision</label>
+                            <textarea id="vision" class="form-control" rows="5">{{ $page->vision }}</textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small text-uppercase">Strategic Goals</label>
+                            <textarea id="goals" class="form-control" rows="6">{{ $page->goals }}</textarea>
+                        </div>
+
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold small text-uppercase">Related Links</label>
+
+                            <div id="relatedLinksWrapper"></div>
+
+                            <button type="button" class="btn btn-sm btn-outline-primary mt-2" onclick="addLinkField()">
+                                <i class="bi bi-plus"></i> Add Link
+                            </button>
+                        </div>
+
+
+                        <button onclick="savePage(this)" class="btn btn-primary w-100 py-2 shadow-sm">
                             <i class="bi bi-cloud-arrow-up me-2"></i> Save Changes
                         </button>
                     </div>
                 </div>
-
-                <div class="alert alert-info mt-3 small shadow-sm border-0">
-                    <i class="bi bi-info-circle me-1"></i>
-                    Changes are visible in the preview in real-time. Don't forget to save to make them live!
-                </div>
             </div>
 
             <div class="col-lg-8">
-                <div class="card border-0 shadow-sm overflow-hidden" style="height: calc(100vh - 160px);">
+                <div class="card border-0 shadow-sm overflow-hidden" style="height: calc(100vh - 120px);">
                     <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-                        <span class="small fw-bold text-uppercase tracking-wider">
-                            <i class="bi bi-eye me-2"></i>Live Preview
-                        </span>
-                        <div class="d-flex gap-2">
-                            <span class="badge bg-success opacity-75">Live Sync Active</span>
-                            <span class="badge bg-secondary">Desktop View</span>
-                        </div>
+                        <span class="small fw-bold"><i class="bi bi-eye me-2"></i>PREVIEW MODE</span>
                     </div>
-                    <div class="card-body p-0 bg-light">
-                        <iframe id="previewFrame"
-                            style="width: 100%; height: 100%; border: none; background: white;"></iframe>
+                    <div class="card-body p-0">
+                        <iframe id="previewFrame" style="width: 100%; height: 100%; border: none;"></iframe>
                     </div>
                 </div>
             </div>
@@ -76,81 +84,107 @@
     </div>
 
     <script>
-        // Elements
-        const templateSelect = document.getElementById('template');
-        const titleInput = document.getElementById('title');
-        const descInput = document.getElementById('description');
-        const buttonInput = document.getElementById('button');
+        const baseUrl = "{{ url('/') }}";
         const frame = document.getElementById('previewFrame');
 
-        // Dynamic Base URL from Laravel
-        const baseUrl = "{{ url('/') }}";
+        const fields = [
+            'template',
+            'title',
+            'description',
+            'button',
+            'mission',
+            'vision',
+            'goals'
+        ];
 
-        /**
-         * Updates the iframe source with current input values
-         */
+        /* ================= RELATED LINKS ================= */
+
+        const relatedLinksWrapper = document.getElementById('relatedLinksWrapper');
+
+        function addLinkField(value = '') {
+            const div = document.createElement('div');
+            div.className = 'input-group mb-2';
+
+            div.innerHTML = `
+                <input type="text" class="form-control related-link"
+                       placeholder="e.g. E-Library"
+                       value="${value}">
+                <button class="btn btn-outline-danger" type="button"
+                        onclick="this.parentElement.remove(); updatePreview();">
+                    <i class="bi bi-trash"></i>
+                </button>
+            `;
+
+            relatedLinksWrapper.appendChild(div);
+            div.querySelector('input').addEventListener('input', updatePreview);
+            updatePreview();
+        }
+
+        function getRelatedLinks() {
+            return Array.from(document.querySelectorAll('.related-link'))
+                .map(el => el.value.trim())
+                .filter(Boolean);
+        }
+
+        /* ================= PREVIEW ================= */
+
         function updatePreview() {
-            const params = new URLSearchParams({
-                template: templateSelect.value,
-                title: titleInput.value,
-                description: descInput.value,
-                button: buttonInput.value
+            const params = new URLSearchParams();
+
+            fields.forEach(f => {
+                params.append(f, document.getElementById(f).value);
             });
 
-            // Use your API route for preview
+            getRelatedLinks().forEach(link => {
+                params.append('related_links[]', link);
+            });
+
             frame.src = `${baseUrl}/api/landing/preview?${params.toString()}`;
         }
 
-        /**
-         * Saves the data to the database via API
-         */
+        fields.forEach(f => {
+            document.getElementById(f).addEventListener('input', updatePreview);
+        });
+
+        /* ================= SAVE ================= */
+
         function savePage(btn) {
-            // UI Feedback: Loading state
             const originalText = btn.innerHTML;
             btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Saving...';
             btn.disabled = true;
+
+            const data = {};
+            fields.forEach(f => data[f] = document.getElementById(f).value);
+            data.related_links = getRelatedLinks();
 
             fetch(`${baseUrl}/api/landing/save`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}', // Laravel CSRF Protection
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
                     'Accept': 'application/json'
                 },
-                body: JSON.stringify({
-                    template: templateSelect.value,
-                    title: titleInput.value,
-                    description: descInput.value,
-                    button: buttonInput.value
-                })
+                body: JSON.stringify(data)
             })
-                .then(async response => {
-                    const data = await response.json();
-                    if (!response.ok) throw new Error(data.message || 'Error saving data');
-                    return data;
-                })
-                .then(() => {
-                    alert('Success! Landing page content has been updated.');
-                })
-                .catch(err => {
-                    console.error('Save error:', err);
-                    alert('Error: ' + err.message);
-                })
+                .then(res => res.json())
+                .then(() => alert('Landing page updated!'))
+                .catch(() => alert('Save failed'))
                 .finally(() => {
-                    // Restore button state
                     btn.innerHTML = originalText;
                     btn.disabled = false;
                 });
         }
 
-        // Attach Event Listeners for Live Preview
-        templateSelect.onchange = updatePreview;
-        titleInput.oninput = updatePreview;
-        descInput.oninput = updatePreview;
-        buttonInput.oninput = updatePreview;
+        /* ================= INIT ================= */
 
-        // Run preview once on page load
+        const existingLinks = @json($page->related_links ?? []);
+
+        if (existingLinks.length) {
+            existingLinks.forEach(link => addLinkField(link));
+        } else {
+            addLinkField();
+        }
+
         window.onload = updatePreview;
-
     </script>
 @endsection

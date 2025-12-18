@@ -11,5 +11,14 @@ class LandingPage extends Model
         'title',
         'description',
         'button',
+        'mission',
+        'vision',
+        'goals',
+        'related_links'
     ];
+
+    protected $casts = [
+        'related_links' => 'array'
+    ];
+
 }

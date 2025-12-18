@@ -16,6 +16,11 @@ return new class extends Migration {
             $table->string('title');
             $table->text('description');
             $table->string('button');
+
+            $table->text('mission')->nullable();
+            $table->text('vision')->nullable();
+            $table->text('goals')->nullable();
+            $table->json('related_links')->nullable();
             $table->timestamps();
         });
     }
