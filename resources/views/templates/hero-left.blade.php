@@ -20,11 +20,22 @@
             background-color: #f8fafc;
         }
 
+        /* Navbar */
         .navbar {
             backdrop-filter: blur(10px);
             background: var(--glass-bg);
             border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 1rem 0;
         }
+
+        .navbar-toggler {
+            border: none;
+        }
+
+        .navbar-light .navbar-toggler-icon {
+            filter: invert(0.3);
+        }
+
 
         .hero-section {
             padding: 160px 0 100px;
@@ -189,140 +200,70 @@
             height: 100%;
             object-fit: cover;
         }
+
+        .page-content {
+            padding-top: 90px;
+            /* adjust to your navbar height */
+        }
     </style>
 </head>
 
 <body>
-
-    <nav class="navbar navbar-expand-lg fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="#">BRAND</a>
-            <button class="btn btn-sm btn-outline-dark rounded-pill">Contact Us</button>
+            <a class="navbar-brand fw-bold" href="#" onclick="loadPage('landing'); return false;">
+                LIBRARY
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navRes"
+                aria-controls="navRes" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navRes">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+                    @php
+                        $navPages = \App\Models\Page::orderBy('order_index')->get();
+                    @endphp
+
+                    @foreach($navPages as $navPage)
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold text-dark" href="#"
+                                onclick="loadPage('{{ $navPage->slug }}'); return false;">
+                                {{ $navPage->title }}
+                            </a>
+                        </li>
+                    @endforeach
+
+                </ul>
+            </div>
         </div>
     </nav>
 
-    <section class="hero-section">
-        <div class="container position-relative" style="z-index: 1;">
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <span class="section-tag mb-3 d-block">Welcome to the future</span>
-                    <h1 class="display-3 fw-bold mb-4" style="letter-spacing: -1px;">
-                        {{ $title ?? 'Default Title' }}
-                    </h1>
-                    <p class="lead text-muted mb-5" style="max-width: 90%;">
-                        {{ $description ?? 'Default Description text goes here.' }}
-                    </p>
-                    <div class="d-flex gap-3">
-                        <button class="btn btn-modern shadow-lg">{{ $button ?? 'Get Started' }}</button>
-                        <button class="btn btn-link text-dark fw-semibold text-decoration-none">
-                            Learn More <i class="bi bi-arrow-right"></i>
-                        </button>
-                    </div>
-                </div>
+    <main id="page-content-area" class="page-content">
+        @include('templates.partials.hero-left_content')
+    </main>
 
-                <div class="col-lg-6 d-none d-lg-block">
-                    <div class="floating-image">
-                        <div class="hero-img-container">
-                            @if(!empty($image))
-                                {{-- Displays the uploaded image from storage --}}
-                                <img src="{{ asset('storage/' . $image) }}" alt="Hero Image">
-                            @else
-                                {{-- Fallback placeholder if no image is uploaded --}}
-                                <div
-                                    style="background: var(--primary-gradient); height: 100%; display: flex; align-items: center; justify-content: center;">
-                                    <i class="bi bi-rocket-takeoff text-white" style="font-size: 10rem; opacity: 0.2;"></i>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <section class="py-5">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-md-6">
-                    <div class="card-feature shadow-sm">
-                        <div class="icon-box bg-primary bg-opacity-10 text-primary">
-                            <i class="bi bi-lightning-charge-fill fs-4"></i>
-                        </div>
-                        <h3 class="fw-bold">Our Mission</h3>
-                        <p class="text-muted leading-relaxed">
-                            {{ $mission ?? 'We aim to redefine the industry standards through innovation.' }}
-                        </p>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card-feature shadow-sm">
-                        <div class="icon-box bg-success bg-opacity-10 text-success">
-                            <i class="bi bi-eye-fill fs-4"></i>
-                        </div>
-                        <h3 class="fw-bold">Our Vision</h3>
-                        <p class="text-muted leading-relaxed">
-                            {{ $vision ?? 'To be the global leader in sustainable solutions.' }}
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function loadPage(slug) {
+            const contentArea = document.getElementById('page-content-area');
+            const nav = document.getElementById('navRes');
 
-    <section class="goals-section">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-4">
-                    <span class="section-tag mb-2 d-block">Strategy</span>
-                    <h2 class="display-6 fw-bold mb-4">Strategic Goals</h2>
-                </div>
-                <div class="col-lg-8">
-                    <p class="fs-5 opacity-75">
-                        {{ $goals ?? 'Operational Excellence, Customer Intimacy, and Product Leadership.' }}
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
+            fetch(`/api/page/${slug}`)
+                .then(res => res.text())
+                .then(html => {
+                    contentArea.innerHTML = html;
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    <section class="py-5 bg-white">
-        <div class="container">
-            <div class="d-flex align-items-center justify-content-between mb-4">
-                <h2 class="fw-bold m-0">Related Resources</h2>
-                <span class="badge bg-light text-dark border">External Links</span>
-            </div>
-
-            <div class="row g-4">
-                {{-- Handle both arrays (API) and JSON strings (Direct DB) --}}
-                @php
-                    $links = is_array($related_links ?? []) ? ($related_links ?? []) : json_decode($related_links, true);
-                @endphp
-
-                @forelse($links ?? [] as $link)
-                    <div class="col-lg-4 col-md-6">
-                        <a href="#" class="link-preview-card">
-                            <div class="link-thumbnail">
-                                <i class="bi bi-link-45deg"></i>
-                            </div>
-                            <div class="link-content">
-                                <span class="link-title">{{ $link }}</span>
-                                <span class="link-description">Explore resources regarding {{ $link }}.</span>
-                                <span class="link-url">https://resource.link/{{ Str::slug($link) }}</span>
-                            </div>
-                        </a>
-                    </div>
-                @empty
-                    <div class="col-12 text-center text-muted">No related resources available.</div>
-                @endforelse
-            </div>
-        </div>
-    </section>
-
-    <footer class="py-4 border-top">
-        <div class="container text-center text-muted small">
-            &copy; 2025 Your Modern Site. All rights reserved.
-        </div>
-    </footer>
+                    const bsCollapse = bootstrap.Collapse.getInstance(nav);
+                    if (bsCollapse) bsCollapse.hide();
+                })
+                .catch(err => console.error("Error loading page:", err));
+        }
+    </script>
 
 </body>
 

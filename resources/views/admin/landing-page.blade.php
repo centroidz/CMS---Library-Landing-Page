@@ -3,6 +3,33 @@
 @section('title', 'Landing Page Builder')
 
 @section('content')
+    <style>
+        /* Animation for the reload button */
+        .spin-loader {
+            animation: rotate 0.8s linear;
+            display: inline-block;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Smooth transition for the iframe */
+        #previewFrame {
+            transition: opacity 0.3s ease;
+        }
+
+        .loading-iframe {
+            opacity: 0.5;
+        }
+    </style>
+
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-4" style="height: calc(100vh - 120px); overflow-y: auto;">
@@ -15,6 +42,10 @@
                             <label class="form-label fw-bold small text-uppercase">Template</label>
                             <select id="template" class="form-select">
                                 <option value="hero-left" {{ $page->template == 'hero-left' ? 'selected' : '' }}>Hero Left
+                                </option>
+                                <option value="hero-center" {{ $page->template == 'hero-center' ? 'selected' : '' }}>Hero
+                                    Center</option>
+                                <option value="split" {{ $page->template == 'split' ? 'selected' : '' }}>Split Layout
                                 </option>
                             </select>
                         </div>
@@ -80,8 +111,12 @@
                 <div class="card border-0 shadow-sm overflow-hidden" style="height: calc(100vh - 120px);">
                     <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
                         <span class="small fw-bold"><i class="bi bi-eye me-2"></i>PREVIEW MODE</span>
+                        <button id="reloadBtn" onclick="manualReload()" class="btn btn-sm btn-outline-light border-0"
+                            title="Refresh Preview">
+                            <i id="reloadIcon" class="bi bi-arrow-clockwise"></i>
+                        </button>
                     </div>
-                    <div class="card-body p-0">
+                    <div class="card-body p-0 position-relative">
                         <iframe id="previewFrame" style="width: 100%; height: 100%; border: none;"></iframe>
                     </div>
                 </div>
@@ -92,7 +127,6 @@
     <script>
         const baseUrl = "{{ url('/') }}";
         const frame = document.getElementById('previewFrame');
-
         const fields = ['template', 'title', 'description', 'button', 'mission', 'vision', 'goals'];
 
         /* ================= RELATED LINKS ================= */
@@ -102,11 +136,11 @@
             const div = document.createElement('div');
             div.className = 'input-group mb-2';
             div.innerHTML = `
-                    <input type="text" class="form-control related-link" placeholder="e.g. E-Library" value="${value}">
-                    <button class="btn btn-outline-danger" type="button" onclick="this.parentElement.remove(); updatePreview();">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                `;
+                                <input type="text" class="form-control related-link" placeholder="e.g. E-Library" value="${value}">
+                                <button class="btn btn-outline-danger" type="button" onclick="this.parentElement.remove(); updatePreview();">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            `;
             relatedLinksWrapper.appendChild(div);
             div.querySelector('input').addEventListener('input', updatePreview);
             updatePreview();
@@ -126,13 +160,13 @@
                 reader.onload = function (event) {
                     document.getElementById('imgPreview').src = event.target.result;
                     document.getElementById('imagePreviewWrapper').classList.remove('d-none');
-                    updatePreview(); // Trigger preview update
+                    updatePreview();
                 };
                 reader.readAsDataURL(file);
             }
         });
 
-        /* ================= PREVIEW ================= */
+        /* ================= PREVIEW LOGIC ================= */
         function updatePreview() {
             const params = new URLSearchParams();
             fields.forEach(f => {
@@ -143,10 +177,27 @@
                 params.append('related_links[]', link);
             });
 
-            // Note: Iframe preview cannot show the NEWly selected image until upload,
-            // unless we send the Base64 (which is too large for URLs).
-            // The iframe will show the EXISTING saved image until Save is clicked.
+            // Cache busting: ensure the iframe refreshes even if the URL looks similar
+            params.append('t', new Date().getTime());
+
+            frame.classList.add('loading-iframe');
             frame.src = `${baseUrl}/api/landing/preview?${params.toString()}`;
+
+            frame.onload = () => {
+                frame.classList.remove('loading-iframe');
+            };
+        }
+
+        // Manual reload triggered by the button
+        function manualReload() {
+            const icon = document.getElementById('reloadIcon');
+            icon.classList.add('spin-loader');
+
+            updatePreview();
+
+            setTimeout(() => {
+                icon.classList.remove('spin-loader');
+            }, 800);
         }
 
         fields.forEach(f => {
@@ -159,19 +210,15 @@
             btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Saving...';
             btn.disabled = true;
 
-            // Use FormData to allow file uploads
             const formData = new FormData();
-
             fields.forEach(f => {
                 formData.append(f, document.getElementById(f).value);
             });
 
-            // Handle Related Links array
             getRelatedLinks().forEach(link => {
                 formData.append('related_links[]', link);
             });
 
-            // Handle Image File
             const imageFile = document.getElementById('image').files[0];
             if (imageFile) {
                 formData.append('image', imageFile);
@@ -182,14 +229,12 @@
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',
                     'Accept': 'application/json'
-                    // Important: Do NOT set Content-Type header when using FormData
                 },
                 body: formData
             })
                 .then(res => res.json())
                 .then(data => {
                     alert('Landing page updated!');
-                    // Optional: Update iframe after save to show new image
                     updatePreview();
                 })
                 .catch(() => alert('Save failed'))
