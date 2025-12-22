@@ -109,14 +109,14 @@
                         <i class="bi bi-pencil-square edit-badge"></i>
                     </a>
                 </li>
-
-                <li class="{{ request()->routeIs('admin.staff') ? 'active' : '' }}">
-                    <a href="{{ route('admin.staff') }}">
-                        <span><i class="bi bi-person-badge nav-icon"></i> Staff Management</span>
-                        <i class="bi bi-pencil-square edit-badge"></i>
-                    </a>
-                </li>
-
+                @if (Auth::user()->role === 'admin')
+                    <li class="{{ request()->routeIs('admin.staff') ? 'active' : '' }}">
+                        <a href="{{ route('admin.staff') }}">
+                            <span><i class="bi bi-person-badge nav-icon"></i> Staff Management</span>
+                            <i class="bi bi-pencil-square edit-badge"></i>
+                        </a>
+                    </li>
+                @endif
                 <li class="{{ request()->routeIs('admin.announcements') ? 'active' : '' }}">
                     <a href="{{ route('admin.announcements') }}">
                         <span><i class="bi bi-megaphone nav-icon"></i> Announcement</span>
@@ -131,8 +131,13 @@
                 <div class="container-fluid">
                     <span class="navbar-brand mb-0 h1 text-secondary">Editor Panel</span>
                     <div class="ms-auto d-flex align-items-center">
-                        <span class="me-3 d-none d-md-inline text-muted">Welcome, Admin</span>
-                        <a href="#" class="btn btn-outline-danger btn-sm">Logout</a>
+                        <span class="me-3 d-none d-md-inline text-muted">Welcome, {{ explode(' ', auth()->user()->name)[0] }}</span>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="btn btn-outline-danger btn-sm">
+                                <i class="bi bi-box-arrow-right"></i> Logout
+                            </button>
+                        </form>
                     </div>
                 </div>
             </nav>

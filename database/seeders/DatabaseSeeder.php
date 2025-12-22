@@ -25,5 +25,10 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PageSeeder::class,
         ]);
+
+        // Call AdminSeeder to create default admin user
+        $this->call([
+            AdminSeeder::class,
+        ]);
     }
 }

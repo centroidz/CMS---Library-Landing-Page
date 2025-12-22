@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Page;
+use App\Models\User;
 use App\Models\LandingPage; // Added this
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -56,9 +57,12 @@ class DashboardController extends Controller
     }
 
     // Staff view
-    public function staffIndex()
-    {
-        return view('admin.staff');
+    public function staffIndex(){
+
+    $users = User::where('id', '!=', auth()->id())->get();
+    
+    return view('admin.staff', compact('users'));
+
     }
 
     // Announcements view
