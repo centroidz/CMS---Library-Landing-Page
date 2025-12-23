@@ -241,7 +241,7 @@
         // Set form action dynamically
         // Ensure you have a named route: Route::put('/admin/users/{user}', ...)->name('admin.users.update');
         const form = document.getElementById('editUserForm');
-        form.action = `/admin/users/${user.id}`; 
+        form.action = `/admin/users/${user.id}/update`; 
         
         // Populate fields
         document.getElementById('edit_name').value = user.name;
