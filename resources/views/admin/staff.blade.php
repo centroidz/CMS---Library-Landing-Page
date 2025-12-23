@@ -157,9 +157,10 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Role</label>
-                    <select name="role" class="form-select">
+                    <select name="role" class="form-select">  
                         <option value="editor">Editor</option>
                         <option value="moderator">Moderator</option>
+                        <option value="admin">Admin</option>
                     </select>
                 </div>
             </div>
@@ -197,6 +198,7 @@
                     <select name="role" id="edit_role" class="form-select">
                         <option value="editor">Editor</option>
                         <option value="moderator">Moderator</option>
+                        <option value="admin">Admin</option>
                     </select>
                 </div>
                 <div class="mb-3">
