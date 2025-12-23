@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\Auth;
 
 class CheckRole
 {
-    public function handle(Request $request, Closure $next, $role): Response
+    public function handle(Request $request, Closure $next, ...$roles): Response
     {
-        if (!Auth::check() || Auth::user()->role !== $role) {
-            // If user is not logged in OR role doesn't match, abort.
+        if (!Auth::check() || !in_array(Auth::user()->role, $roles)) {
+            // If user is not logged in OR doesn't have one of the required roles, abort.
             abort(403, 'Unauthorized access.');
         }
 
