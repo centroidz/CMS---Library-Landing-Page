@@ -57,11 +57,12 @@ class DashboardController extends Controller
     }
 
     // Staff view
-    public function staffIndex(){
+    public function staffIndex()
+    {
 
-    $users = User::where('id', '!=', auth()->id())->get();
-    
-    return view('admin.staff', compact('users'));
+        $users = User::where('id', '!=', auth()->id())->get();
+
+        return view('admin.staff', compact('users'));
 
     }
 
@@ -69,6 +70,11 @@ class DashboardController extends Controller
     public function announcementsIndex()
     {
         return view('admin.announcements');
+    }
+
+    public function staffPage()
+    {
+        return view('admin.staff-page');
     }
 
     public function editor($id)

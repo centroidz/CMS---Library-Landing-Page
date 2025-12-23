@@ -117,6 +117,12 @@
                         </a>
                     </li>
                 @endif
+                <li class="{{ request()->routeIs('admin.staff-page') ? 'active' : '' }}">
+                    <a href="{{ route('admin.staff-page') }}">
+                        <span><i class="bi bi-megaphone nav-icon"></i> Staff Page</span>
+                        <i class="bi bi-pencil-square edit-badge"></i>
+                    </a>
+                </li>
                 <li class="{{ request()->routeIs('admin.announcements') ? 'active' : '' }}">
                     <a href="{{ route('admin.announcements') }}">
                         <span><i class="bi bi-megaphone nav-icon"></i> Announcement</span>
