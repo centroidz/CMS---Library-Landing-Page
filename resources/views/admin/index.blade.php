@@ -43,10 +43,13 @@
                                             <a href="/admin/{{ $page->slug }}" class="btn btn-sm btn-outline-primary">Manage</a>
                                         @else
                                             <a href="/admin/editor/{{ $page->id }}" class="btn btn-sm btn-primary">Open Editor</a>
-                                            <form action="{{ route('pages.destroy', $page->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this page?')">
+                                            <form action="{{ route('pages.destroy', $page->id) }}" method="POST"
+                                                style="display:inline;" class="role-protected-form">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                                <button type="submit" class="btn btn-sm btn-outline-danger"
+                                                    data-role="{{ auth()->user()->role }}">
+                                                    <i class="bi bi-trash"></i></button>
                                             </form>
                                         @endif
                                     </td>
@@ -61,7 +64,7 @@
 
     <div class="modal fade" id="addPageModal" tabindex="-1">
         <div class="modal-dialog">
-            <form action="{{ route('pages.store') }}" method="POST" class="modal-content">
+            <form action="{{ route('pages.store') }}" method="POST" class="modal-content role-protected-form">
                 @csrf
                 <div class="modal-header">
                     <h5>New Web Page</h5>
@@ -73,7 +76,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary w-100">Create & Open Editor</button>
+                    <button type="submit" class="btn btn-primary w-100" data-role="{{ auth()->user()->role }}">Create & Open
+                        Editor</button>
                 </div>
             </form>
         </div>

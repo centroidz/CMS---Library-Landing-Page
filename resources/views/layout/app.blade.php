@@ -131,7 +131,8 @@
                 <div class="container-fluid">
                     <span class="navbar-brand mb-0 h1 text-secondary">Editor Panel</span>
                     <div class="ms-auto d-flex align-items-center">
-                        <span class="me-3 d-none d-md-inline text-muted">Welcome, {{ explode(' ', auth()->user()->name)[0] }}</span>
+                        <span class="me-3 d-none d-md-inline text-muted">Welcome,
+                            {{ explode(' ', auth()->user()->name)[0] }}</span>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <button type="submit" class="btn btn-outline-danger btn-sm">
@@ -148,7 +149,76 @@
         </div>
     </div>
 
+    <div class="modal fade" id="unauthorizedModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">403 – Access Denied</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>You don’t have permission to access this section.</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">
+                        OK
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('click', function (e) {
+            const link = e.target.closest('[data-protected]');
+            if (!link) return;
+
+            e.preventDefault();
+
+            // Show unauthorized modal immediately
+            new bootstrap.Modal(
+                document.getElementById('unauthorizedModal')
+            ).show();
+        });
+
+        document.addEventListener('submit', function (e) {
+            const form = e.target.closest('.role-protected-form');
+            if (!form) return;
+
+            const button = form.querySelector('[type="submit"][data-role]');
+            if (!button) return;
+
+            const role = button.dataset.role;
+
+            // Determine allowed roles per form
+            let allowedRoles = ['admin']; // default
+            if (form.action.includes('pages/store')) {
+                allowedRoles = ['admin', 'moderator'];
+            }
+
+            if (!allowedRoles.includes(role)) {
+                e.preventDefault();
+                new bootstrap.Modal(
+                    document.getElementById('unauthorizedModal')
+                ).show();
+                return false;
+            }
+
+            // Optional: delete confirmation
+            if (form.action.includes('pages/') && form.method.toLowerCase() === 'post' &&
+                form.querySelector('[name="_method"][value="DELETE"]')) {
+                return confirm('Are you sure you want to delete this page?');
+            }
+
+            return true;
+        });
+    </script>
+
+
+
+
 </body>
 
 </html>
