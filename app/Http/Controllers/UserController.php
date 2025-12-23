@@ -44,6 +44,7 @@ class UserController extends Controller
 
     public function update(User $user, Request $request)
     {
+        
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
@@ -55,6 +56,15 @@ class UserController extends Controller
             'email' => $validated['email'],
             'role' => $validated['role'],
         ]);
+
+        // Update password if provided
+        if ($request->has('password') && $request->password) {
+            $request->validate([
+                'password' => 'string|min:8',
+            ]);
+            $user->password = Hash::make($request->password);
+            $user->save();
+        }
 
         return redirect()->route('admin.staff')->with('success', 'User updated successfully.');
     }
