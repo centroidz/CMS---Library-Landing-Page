@@ -25,6 +25,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/editor/{id}', [DashboardController::class, 'editor'])->name('admin.editor');
     Route::post('/editor/{id}/save', [DashboardController::class, 'saveEditor'])->name('admin.editor.save');
 
+    Route::post('/admin/update-user', [DashboardController::class, 'updateUser'])->name('admin.user.update');
+    Route::get('/staff-preview', [DashboardController::class, 'publicStaffView'])->name('public.staff');
 
     // Landing Page Edit
     Route::get('/landing-page', [DashboardController::class, 'landingEdit'])->name('admin.landing-page');
