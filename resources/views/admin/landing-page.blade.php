@@ -47,6 +47,15 @@
                                     Center</option>
                                 <option value="split" {{ $page->template == 'split' ? 'selected' : '' }}>Split Layout
                                 </option>
+                                <option value="hero-right" {{ $page->template == 'hero-right' ? 'selected' : '' }}>
+                                    Hero Right
+                                </option>
+                                <option value="stacked" {{ $page->template == 'stacked' ? 'selected' : '' }}>
+                                    Stacked
+                                </option>
+                                <option value="split-reverse" {{ $page->template == 'split-reverse' ? 'selected' : '' }}>
+                                    Split Reverse
+                                </option>
                             </select>
                         </div>
 
