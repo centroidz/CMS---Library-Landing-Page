@@ -130,6 +130,7 @@
       </section>`
 },
 
+
                     {
                         id: 'image-gallery-3',
                         label: '3 Image Gallery',
@@ -151,6 +152,8 @@
         </div>
       </section>`
                     },
+
+                    
 {
   id: 'features-3',
   label: '3 Features',
@@ -895,6 +898,238 @@
   </div>
 </section>`
 },
+
+
+/* =========================
+                       Pricing Section
+                    ========================== */
+{
+  id: 'pricing-circle',
+  label: 'Pricing - Circular Cards',
+  category: 'Pricing Layout',
+  content: `
+<style>
+.circle-card {
+  border-radius: 50%;
+  padding: 50px 0;
+  transition: transform 0.4s, box-shadow 0.4s;
+  text-align: center;
+  background: #0d6efd;
+  color: white;
+}
+.circle-card:hover {
+  transform: scale(1.1);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+}
+.circle-price {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+</style>
+
+<section class="py-5 bg-light">
+  <div class="container text-center">
+    <h2 class="fw-bold mb-5">Circular Pricing Cards</h2>
+    <div class="row g-4 justify-content-center">
+      <div class="col-md-3">
+        <div class="circle-card">
+          <h4>Starter</h4>
+          <div class="circle-price">$19</div>
+          <p>Lorem ipsum dolor sit amet.</p>
+          <a href="#" class="btn btn-light mt-2">Choose</a>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="circle-card bg-gradient">
+          <h4>Professional</h4>
+          <div class="circle-price">$49</div>
+          <p>Adipiscing elit sed do eiusmod.</p>
+          <a href="#" class="btn btn-light mt-2">Choose</a>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="circle-card">
+          <h4>Enterprise</h4>
+          <div class="circle-price">$99</div>
+          <p>Ut labore et dolore magna aliqua.</p>
+          <a href="#" class="btn btn-light mt-2">Choose</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>`
+},
+
+
+
+{
+  id: 'pricing-progress-bar',
+  label: 'Pricing - Progress Bar',
+  category: 'Pricing Layout',
+  content: `
+<style>
+.progress-bar-animated {
+  transition: width 1s ease-in-out;
+}
+.card:hover .progress-bar-animated {
+  width: 100%;
+}
+</style>
+
+<section class="py-5 bg-light">
+  <div class="container text-center">
+    <h2 class="fw-bold mb-5">Pricing with Animated Progress</h2>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card h-100 p-4">
+          <h4>Starter</h4>
+          <h2>$15</h2>
+          <p>Lorem ipsum dolor sit.</p>
+          <div class="progress my-3" style="height: 6px;">
+            <div class="progress-bar bg-primary progress-bar-animated" style="width:50%"></div>
+          </div>
+          <a href="#" class="btn btn-outline-primary mt-2">Select</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 p-4 shadow-lg">
+          <h4>Professional</h4>
+          <h2>$45</h2>
+          <p>Adipiscing elit sed do eiusmod.</p>
+          <div class="progress my-3" style="height: 6px;">
+            <div class="progress-bar bg-success progress-bar-animated" style="width:70%"></div>
+          </div>
+          <a href="#" class="btn btn-primary mt-2">Choose</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 p-4">
+          <h4>Enterprise</h4>
+          <h2>$85</h2>
+          <p>Ut labore et dolore magna aliqua.</p>
+          <div class="progress my-3" style="height: 6px;">
+            <div class="progress-bar bg-warning progress-bar-animated" style="width:90%"></div>
+          </div>
+          <a href="#" class="btn btn-outline-primary mt-2">Get Started</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>`
+},
+
+{
+  id: 'pricing-bounce',
+  label: 'Pricing - Bounce Animation',
+  category: 'Pricing Layout',
+  content: `
+<style>
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-15px); }
+  60% { transform: translateY(-7px); }
+}
+.bounce-card:hover {
+  animation: bounce 0.6s;
+}
+</style>
+
+<section class="py-5 bg-light">
+  <div class="container text-center">
+    <h2 class="fw-bold mb-5">Bounce Animation Pricing</h2>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card h-100 p-4 bounce-card">
+          <h4>Starter</h4>
+          <h2>$18</h2>
+          <p>Lorem ipsum dolor sit.</p>
+          <a href="#" class="btn btn-outline-primary mt-2">Select</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 p-4 bounce-card shadow-lg border-primary">
+          <h4>Pro</h4>
+          <h2>$48</h2>
+          <p>Adipiscing elit sed do eiusmod.</p>
+          <a href="#" class="btn btn-primary mt-2">Choose</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 p-4 bounce-card">
+          <h4>Enterprise</h4>
+          <h2>$95</h2>
+          <p>Ut labore et dolore magna aliqua.</p>
+          <a href="#" class="btn btn-outline-primary mt-2">Get Started</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>`
+},
+
+{
+  id: 'pricing-rotate',
+  label: 'Pricing - Rotate Cards',
+  category: 'Sections',
+  content: `
+<style>
+.rotate-card {
+  transition: transform 0.6s, box-shadow 0.4s;
+  transform-style: preserve-3d;
+}
+.rotate-card:hover {
+  transform: rotateY(10deg) rotateX(5deg) scale(1.05);
+  box-shadow: 0 20px 35px rgba(0,0,0,0.25);
+}
+</style>
+
+<section class="py-5 bg-light">
+  <div class="container text-center">
+    <h2 class="fw-bold mb-5">Rotating Pricing Cards</h2>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card rotate-card h-100 p-4">
+          <h4>Starter</h4>
+          <h2>$22</h2>
+          <p>Lorem ipsum dolor sit amet.</p>
+          <a href="#" class="btn btn-outline-primary mt-2">Select</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card rotate-card h-100 p-4 shadow-lg border-primary">
+          <h4>Professional</h4>
+          <h2>$52</h2>
+          <p>Adipiscing elit sed do eiusmod.</p>
+          <a href="#" class="btn btn-primary mt-2">Choose</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card rotate-card h-100 p-4">
+          <h4>Enterprise</h4>
+          <h2>$110</h2>
+          <p>Ut labore et dolore magna aliqua.</p>
+          <a href="#" class="btn btn-outline-primary mt-2">Get Started</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>`
+},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                     /* =========================
                        FOOTERS
