@@ -32,7 +32,7 @@
             /* Slightly softer dark blue */
             color: #fff;
             transition: all 0.3s;
-            z-index: 1000;
+            z-index: 1050;
         }
 
         @media (max-width: 991px) {
@@ -112,7 +112,7 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
-            z-index: 999;
+            z-index: 1040;
             display: none;
         }
     </style>
@@ -165,7 +165,7 @@
         </nav>
 
         <div id="content">
-            <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+            <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm" style="position: sticky; top: 0; z-index: 1020;">
                 <div class="container-fluid">
                     <button class="btn btn-outline-secondary d-lg-none me-2" id="sidebarToggle"><i
                             class="bi bi-list"></i></button>

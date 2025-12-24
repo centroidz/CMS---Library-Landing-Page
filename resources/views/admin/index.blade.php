@@ -16,7 +16,7 @@
 
         <div class="card border-0 shadow-sm">
             <div class="card-body p-0">
-                <div class="table-responsive">
+                <div class="table-responsive d-none d-lg-block">
                     <table class="table table-hover align-middle mb-0">
                         <thead class="bg-light">
                             <tr>
@@ -57,6 +57,55 @@
                             @endforeach
                         </tbody>
                     </table>
+                </div>
+
+                <div class="d-block d-lg-none p-3">
+                    @foreach($pages as $page)
+                        <div class="card mb-3 border-0 shadow-sm overflow-hidden">
+                            <div class="p-1 {{ $page->is_default ? 'bg-secondary' : 'bg-info' }}"></div>
+
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h5 class="card-title mb-0 fw-bold text-dark">{{ $page->title }}</h5>
+                                    <span
+                                        class="badge rounded-pill {{ $page->is_default ? 'bg-light text-secondary border' : 'bg-info-subtle text-info' }} small">
+                                        {{ $page->is_default ? 'System' : 'GrapesJS' }}
+                                    </span>
+                                </div>
+
+                                <div class="text-muted small mb-3">
+                                    <i class="bi bi-link-45deg me-1"></i>
+                                    <code class="text-primary">/api/{{ $page->slug }}</code>
+                                </div>
+
+                                <div class="d-grid gap-2 d-sm-flex justify-content-sm-end pt-3 border-top">
+                                    @if($page->slug == 'landing')
+                                        <a href="/admin/landing-page" class="btn btn-sm btn-outline-primary px-3">
+                                            <i class="bi bi-pencil-square me-1"></i> Edit Form
+                                        </a>
+                                    @elseif($page->is_default)
+                                        <a href="/admin/{{ $page->slug }}" class="btn btn-sm btn-outline-primary px-3">
+                                            <i class="bi bi-gear me-1"></i> Manage
+                                        </a>
+                                    @else
+                                        <a href="/admin/editor/{{ $page->id }}" class="btn btn-sm btn-primary px-3">
+                                            <i class="bi bi-palette me-1"></i> Open Editor
+                                        </a>
+
+                                        <form action="{{ route('pages.destroy', $page->id) }}" method="POST" style="display:inline;"
+                                            class="role-protected-form">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-outline-danger w-100"
+                                                data-role="{{ auth()->user()->role }}">
+                                                <i class="bi bi-trash me-1"></i> Delete
+                                            </button>
+                                        </form>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>
