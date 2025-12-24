@@ -76,10 +76,10 @@ class DashboardController extends Controller
     public function staffPage()
     {
         // Fetch all users to list them in the Control Panel
-        $users = \App\Models\User::all();
+        $users = User::all();
 
         // We pass a 'page' object or null to satisfy your layout variables
-        return view('admin.staff-page', compact('users'));
+        return view('admin.staff', compact('users'));
     }
 
     public function updateUser(Request $request)
