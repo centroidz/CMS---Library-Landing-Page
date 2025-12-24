@@ -12,7 +12,7 @@ class PageSeeder extends Seeder
     {
         $defaults = [
             ['title' => 'Home', 'slug' => 'landing', 'is_default' => true, 'order_index' => 1],
-            ['title' => 'Staff', 'slug' => 'staff', 'is_default' => true, 'order_index' => 2],
+            ['title' => 'Staff', 'slug' => 'staff-page', 'is_default' => true, 'order_index' => 2],
             ['title' => 'Announcements', 'slug' => 'announcements', 'is_default' => true, 'order_index' => 3],
         ];
 

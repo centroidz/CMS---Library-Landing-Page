@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Page;
+use App\Models\User;
 use App\Models\LandingPage; // Added this
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class DashboardController extends Controller
 {
@@ -58,7 +60,11 @@ class DashboardController extends Controller
     // Staff view
     public function staffIndex()
     {
-        return view('admin.staff');
+
+        $users = User::where('id', '!=', auth()->id())->get();
+
+        return view('admin.staff', compact('users'));
+
     }
 
     // Announcements view
@@ -67,6 +73,47 @@ class DashboardController extends Controller
         return view('admin.announcements');
     }
 
+    public function staffPage()
+    {
+        // Fetch all users to list them in the Control Panel
+        $users = \App\Models\User::all();
+
+        // We pass a 'page' object or null to satisfy your layout variables
+        return view('admin.staff-page', compact('users'));
+    }
+
+    public function updateUser(Request $request)
+    {
+        $user = User::findOrFail($request->user_id);
+
+        $user->name = $request->name;
+        $user->is_public = $request->is_public === 'true' ? 1 : 0;
+
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($user->profile_image) {
+                Storage::disk('public')->delete($user->profile_image);
+            }
+            // Store new image
+            $path = $request->file('image')->store('staff', 'public');
+            $user->profile_image = $path;
+        }
+
+        $user->save();
+
+        return response()->json(['success' => true]);
+    }
+
+    public function publicStaffView()
+    {
+        // 1. Fetch only users marked for showcase
+        $showcasedStaff = \App\Models\User::where('is_public', true)->get();
+
+        // 2. Return the public-facing view file
+        return view('public.staff-page', [
+            'users' => $showcasedStaff
+        ]);
+    }
     public function editor($id)
     {
         $page = Page::findOrFail($id);

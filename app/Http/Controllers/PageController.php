@@ -31,11 +31,19 @@ class PageController extends Controller
             return "<style>{$page->css_content}</style>" . $page->html_content;
         }
 
-        // 4. Handle System Defaults (Staff, Announcements, etc.)
-        // We look for a blade file named after the slug
+        // 4. For Default Pages, return the corresponding view
+        if ($slug === 'staff-page') {
+            $showcasedStaff = \App\Models\User::where('is_public', true)->get();
+
+            return view('public.staff-page', [
+                'users' => $showcasedStaff
+            ])->render();
+        }
+
         if (view()->exists("public.{$slug}")) {
             return view("public.{$slug}")->render();
         }
+
 
         return "Content for {$page->title} is coming soon.";
     }

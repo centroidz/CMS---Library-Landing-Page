@@ -136,11 +136,11 @@
             const div = document.createElement('div');
             div.className = 'input-group mb-2';
             div.innerHTML = `
-                                <input type="text" class="form-control related-link" placeholder="e.g. E-Library" value="${value}">
-                                <button class="btn btn-outline-danger" type="button" onclick="this.parentElement.remove(); updatePreview();">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            `;
+                                            <input type="text" class="form-control related-link" placeholder="e.g. E-Library" value="${value}">
+                                            <button class="btn btn-outline-danger" type="button" onclick="this.parentElement.remove(); updatePreview();">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        `;
             relatedLinksWrapper.appendChild(div);
             div.querySelector('input').addEventListener('input', updatePreview);
             updatePreview();
