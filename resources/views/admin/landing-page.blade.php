@@ -35,7 +35,7 @@
             <div class="col-lg-4" style="height: calc(100vh - 120px); overflow-y: auto;">
                 <div class="card border-0 shadow-sm mb-4">
                     <div class="card-header bg-white py-3 sticky-top">
-                        <h5 class="mb-0 fw-bold text-primary"><i class="bi bi-pencil-square me-2"></i>Content Editor</h5>
+                        <h5 class="mb-0 fw-bold text-primary"><i class="bi bi-pencil-square me-2"></i>Content tEditor</h5>
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
@@ -136,11 +136,11 @@
             const div = document.createElement('div');
             div.className = 'input-group mb-2';
             div.innerHTML = `
-                                            <input type="text" class="form-control related-link" placeholder="e.g. E-Library" value="${value}">
-                                            <button class="btn btn-outline-danger" type="button" onclick="this.parentElement.remove(); updatePreview();">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        `;
+                                                    <input type="text" class="form-control related-link" placeholder="e.g. E-Library" value="${value}">
+                                                    <button class="btn btn-outline-danger" type="button" onclick="this.parentElement.remove(); updatePreview();">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                `;
             relatedLinksWrapper.appendChild(div);
             div.querySelector('input').addEventListener('input', updatePreview);
             updatePreview();

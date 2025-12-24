@@ -22,6 +22,9 @@
         }
 
         #sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
             min-width: 260px;
             max-width: 260px;
             min-height: 100vh;
@@ -29,6 +32,17 @@
             /* Slightly softer dark blue */
             color: #fff;
             transition: all 0.3s;
+            z-index: 1050;
+        }
+
+        @media (max-width: 991px) {
+            #sidebar {
+                transform: translateX(-100%);
+            }
+
+            #sidebar.show {
+                transform: translateX(0);
+            }
         }
 
         #sidebar .sidebar-header {
@@ -76,12 +90,30 @@
 
         #content {
             width: 100%;
+            padding-left: 260px;
+        }
+
+        @media (max-width: 991px) {
+            #content {
+                padding-left: 0;
+            }
         }
 
         .navbar {
             padding: 15px;
             background: #fff;
             border-bottom: 1px solid #dee2e6;
+        }
+
+        #sidebarBackdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1040;
+            display: none;
         }
     </style>
 </head>
@@ -133,8 +165,10 @@
         </nav>
 
         <div id="content">
-            <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+            <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm" style="position: sticky; top: 0; z-index: 1020;">
                 <div class="container-fluid">
+                    <button class="btn btn-outline-secondary d-lg-none me-2" id="sidebarToggle"><i
+                            class="bi bi-list"></i></button>
                     <span class="navbar-brand mb-0 h1 text-secondary">Editor Panel</span>
                     <div class="ms-auto d-flex align-items-center">
                         <span class="me-3 d-none d-md-inline text-muted">Welcome,
@@ -154,6 +188,8 @@
             </div>
         </div>
     </div>
+
+    <div id="sidebarBackdrop" class="d-lg-none"></div>
 
     <div class="modal fade" id="unauthorizedModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
@@ -219,6 +255,29 @@
             }
 
             return true;
+        });
+
+        // Sidebar toggle
+        const sidebar = document.getElementById('sidebar');
+        const backdrop = document.getElementById('sidebarBackdrop');
+        const toggleBtn = document.getElementById('sidebarToggle');
+
+        toggleBtn.addEventListener('click', function () {
+            sidebar.classList.toggle('show');
+            backdrop.style.display = sidebar.classList.contains('show') ? 'block' : 'none';
+        });
+
+        backdrop.addEventListener('click', function () {
+            sidebar.classList.remove('show');
+            backdrop.style.display = 'none';
+        });
+
+        // Close sidebar when clicking a link
+        sidebar.addEventListener('click', function (e) {
+            if (e.target.tagName === 'A') {
+                sidebar.classList.remove('show');
+                backdrop.style.display = 'none';
+            }
         });
     </script>
 
