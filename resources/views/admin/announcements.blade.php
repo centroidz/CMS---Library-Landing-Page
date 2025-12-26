@@ -34,23 +34,31 @@
         .announcement-list-item.active {
             background-color: #e9ecef;
             border-left: 4px solid #0d6efd;
+            color: #212529;
+        }
+        .announcement-list-item.active h6 {
+            color: #0d6efd;
+        }
+        .announcement-list-item.active .text-muted {
+            color: #6c757d !important;
         }
     </style>
 
     <div class="container-fluid">
         <div class="row">
             <!-- Editor Column -->
-            <div class="col-lg-4" style="height: calc(100vh - 120px); overflow-y: auto;">
-                <div class="card border-0 shadow-sm mb-4">
+            <div class="col-lg-4" style="height: calc(100vh - 120px);">
+                <div class="card border-0 shadow-sm mb-4 h-100">
+                    
+                    <!-- LIST VIEW -->
+                    <div id="listView" class="d-flex flex-column h-100">
                     <div class="card-header bg-white py-3 sticky-top d-flex justify-content-between align-items-center">
                         <h5 class="mb-0 fw-bold text-primary"><i class="bi bi-megaphone me-2"></i>Announcements</h5>
                         <button class="btn btn-sm btn-primary" onclick="initNew()">
                             <i class="bi bi-plus-lg"></i> New
                         </button>
                     </div>
-                    
-                    <!-- List of Announcements -->
-                    <div class="list-group list-group-flush border-bottom" style="max-height: 200px; overflow-y: auto;">
+                        <div class="list-group list-group-flush border-bottom overflow-auto" style="flex-grow: 1;">
                         @if(isset($announcements) && count($announcements) > 0)
                             @foreach($announcements as $ann)
                                 <div class="list-group-item announcement-list-item p-3" 
@@ -67,10 +75,17 @@
                             <div class="p-3 text-center text-muted small">No announcements found.</div>
                         @endif
                     </div>
+                    </div>
 
-                    <!-- Editor Form -->
-                    <div class="card-body bg-light">
-                        <h6 class="fw-bold text-uppercase small mb-3 text-muted" id="formTitle">Create New Announcement</h6>
+                    <!-- EDITOR VIEW -->
+                    <div id="editorView" class="d-none flex-column h-100">
+                        <div class="card-header bg-white py-3 d-flex align-items-center">
+                            <button class="btn btn-sm btn-outline-secondary me-3" onclick="showList()">
+                                <i class="bi bi-arrow-left"></i> Back
+                            </button>
+                            <h6 class="mb-0 fw-bold text-uppercase small text-muted" id="formTitle">Create New Announcement</h6>
+                        </div>
+                        <div class="card-body bg-light overflow-auto">
                         
                         <form id="announcementForm">
                             <input type="hidden" id="id">
@@ -95,6 +110,7 @@
                                 </button>
                             </div>
                         </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -127,9 +143,28 @@
         const createdAtInput = document.getElementById('created_at');
         const deleteBtn = document.getElementById('deleteBtn');
         const formTitle = document.getElementById('formTitle');
+        
+        const listView = document.getElementById('listView');
+        const editorView = document.getElementById('editorView');
+
+        function showList() {
+            listView.classList.remove('d-none');
+            listView.classList.add('d-flex');
+            editorView.classList.add('d-none');
+            editorView.classList.remove('d-flex');
+            frame.src = `${baseUrl}/announcements`;
+        }
+
+        function showEditor() {
+            listView.classList.add('d-none');
+            listView.classList.remove('d-flex');
+            editorView.classList.remove('d-none');
+            editorView.classList.add('d-flex');
+        }
 
         // Initial Setup
         function initNew() {
+            showEditor();
             // Reset Form
             idInput.value = '';
             titleInput.value = '';
@@ -147,6 +182,7 @@
         }
 
         function loadAnnouncement(data) {
+            showEditor();
             // Fill Form
             idInput.value = data.id;
             titleInput.value = data.title;
@@ -300,6 +336,6 @@
         }
 
         // Initialize
-        window.onload = initNew;
+        window.onload = showList;
     </script>
 @endsection
