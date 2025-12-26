@@ -130,6 +130,7 @@
       </section>`
 },
 
+
                     {
                         id: 'image-gallery-3',
                         label: '3 Image Gallery',
@@ -151,6 +152,8 @@
         </div>
       </section>`
                     },
+
+
 {
   id: 'features-3',
   label: '3 Features',
@@ -709,9 +712,9 @@
 </section>`
 },
 
-/* =========================
-   CALL TO ACTION (CTA)
-========================== */
+                /* =========================
+                    CALL TO ACTION (CTA)
+                 ========================== */
 {
     id: 'cta-gradient',
     label: 'CTA – Gradient',
@@ -891,6 +894,684 @@
       <p class="small text-muted mt-3">
         ⏱️ No setup fee • 🔄 30-day money-back guarantee • 👥 24/7 support
       </p>
+    </div>
+  </div>
+</section>`
+},
+
+
+/* =========================
+   TESTIMONIALS
+========================== */
+{
+    id: 'testimonial-gradient-cards',
+    label: 'Testimonial – Gradient Cards',
+    category: 'Testimonials',
+    content: `
+<section class="py-5">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="badge bg-primary bg-gradient rounded-pill px-4 py-2 mb-3 fw-normal" style="background: linear-gradient(135deg, #6366f1, #8b5cf6);">💬 TESTIMONIALS</span>
+      <h2 class="fw-bold display-5 mb-3">Trusted by Creative Teams</h2>
+      <p class="text-muted lead mx-auto" style="max-width: 700px;">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor.
+      </p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-4 col-md-6">
+        <div class="card border-0 shadow-lg h-100 overflow-hidden rounded-4" style="border-top: 4px solid #6366f1;">
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center mb-4">
+              <div class="position-relative">
+                <img src="https://via.placeholder.com/50" class="rounded-circle" width="50" height="50">
+                <span class="position-absolute bottom-0 end-0 bg-success rounded-circle p-1" style="width: 12px; height: 12px;"></span>
+              </div>
+              <div class="ms-3">
+                <h6 class="fw-bold mb-0">Lorem Ipsum</h6>
+                <p class="text-muted small mb-0">Product Designer</p>
+              </div>
+            </div>
+            <p class="text-muted mb-4">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."</p>
+            <div class="d-flex align-items-center justify-content-between">
+              <span class="text-warning">★★★★★</span>
+              <span class="badge bg-light text-primary">Tech</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6">
+        <div class="card border-0 shadow-lg h-100 overflow-hidden rounded-4" style="border-top: 4px solid #10b981;">
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center mb-4">
+              <div class="position-relative">
+                <img src="https://via.placeholder.com/50" class="rounded-circle" width="50" height="50">
+                <span class="position-absolute bottom-0 end-0 bg-success rounded-circle p-1" style="width: 12px; height: 12px;"></span>
+              </div>
+              <div class="ms-3">
+                <h6 class="fw-bold mb-0">Dolor Sit</h6>
+                <p class="text-muted small mb-0">Marketing Lead</p>
+              </div>
+            </div>
+            <p class="text-muted mb-4">"Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."</p>
+            <div class="d-flex align-items-center justify-content-between">
+              <span class="text-warning">★★★★★</span>
+              <span class="badge bg-light text-success">Marketing</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6">
+        <div class="card border-0 shadow-lg h-100 overflow-hidden rounded-4" style="border-top: 4px solid #f59e0b;">
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center mb-4">
+              <div class="position-relative">
+                <img src="https://via.placeholder.com/50" class="rounded-circle" width="50" height="50">
+                <span class="position-absolute bottom-0 end-0 bg-success rounded-circle p-1" style="width: 12px; height: 12px;"></span>
+              </div>
+              <div class="ms-3">
+                <h6 class="fw-bold mb-0">Amet Consectetur</h6>
+                <p class="text-muted small mb-0">Startup Founder</p>
+              </div>
+            </div>
+            <p class="text-muted mb-4">"Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."</p>
+            <div class="d-flex align-items-center justify-content-between">
+              <span class="text-warning">★★★★★</span>
+              <span class="badge bg-light text-warning">Startup</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>`
+},
+
+{
+  id: 'testimonial-glass-dark-advanced',
+  label: 'Testimonials – Glass Dark (Modern)',
+  category: 'Testimonials',
+  content: `
+<section class="py-5 text-white"
+  style="background:linear-gradient(135deg,#0f172a,#020617);">
+  <div class="container">
+
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">What Our Users Say</h2>
+      <p class="text-white-50">Lorem ipsum dolor sit amet consectetur adipiscing elit</p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-4 col-md-6">
+        <div class="p-5 rounded-4 h-100"
+          style="background: rgba(255, 255, 255, 0.05);
+                 backdrop-filter: blur(10px);
+                 border: 1px solid rgba(255, 255, 255, 0.1);">
+          <div class="text-center mb-4">
+            <img src="https://via.placeholder.com/80"
+              class="rounded-circle border border-white border-3"
+              width="80" height="80">
+          </div>
+          <p class="text-center text-white-75 mb-4">
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Sed do eiusmod tempor incididunt ut labore."
+          </p>
+          <div class="text-center">
+            <h6 class="fw-bold mb-1">Lorem Ipsum</h6>
+            <p class="text-white-50 small mb-0">Product Designer</p>
+            <div class="mt-2">
+              <span class="text-warning">★★★★★</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6">
+        <div class="p-5 rounded-4 h-100"
+          style="background: rgba(255, 255, 255, 0.05);
+                 backdrop-filter: blur(10px);
+                 border: 1px solid rgba(255, 255, 255, 0.1);">
+          <div class="text-center mb-4">
+            <img src="https://via.placeholder.com/80"
+              class="rounded-circle border border-white border-3"
+              width="80" height="80">
+          </div>
+          <p class="text-center text-white-75 mb-4">
+            "Ut enim ad minim veniam, quis nostrud exercitation ullamco
+            laboris nisi ut aliquip ex ea commodo."
+          </p>
+          <div class="text-center">
+            <h6 class="fw-bold mb-1">Dolor Sit</h6>
+            <p class="text-white-50 small mb-0">Marketing Lead</p>
+            <div class="mt-2">
+              <span class="text-warning">★★★★★</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6">
+        <div class="p-5 rounded-4 h-100"
+          style="background: rgba(255, 255, 255, 0.05);
+                 backdrop-filter: blur(10px);
+                 border: 1px solid rgba(255, 255, 255, 0.1);">
+          <div class="text-center mb-4">
+            <img src="https://via.placeholder.com/80"
+              class="rounded-circle border border-white border-3"
+              width="80" height="80">
+          </div>
+          <p class="text-center text-white-75 mb-4">
+            "Duis aute irure dolor in reprehenderit in voluptate velit
+            esse cillum dolore eu fugiat nulla pariatur."
+          </p>
+          <div class="text-center">
+            <h6 class="fw-bold mb-1">Amet Consectetur</h6>
+            <p class="text-white-50 small mb-0">Startup Founder</p>
+            <div class="mt-2">
+              <span class="text-warning">★★★★★</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>`
+},
+
+{
+    id: 'testimonial-quote-minimal',
+    label: 'Testimonial – Quote Minimal',
+    category: 'Testimonials',
+    content: `
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="text-center position-relative">
+          <div class="position-absolute top-0 start-50 translate-middle-x">
+            <span style="font-size: 6rem; color: #e5e7eb; z-index: 0;">❝</span>
+          </div>
+
+          <div class="position-relative" style="z-index: 1; padding-top: 4rem;">
+            <h2 class="fw-bold display-4 mb-5">Client Success Stories</h2>
+
+            <div class="row g-5">
+              <div class="col-md-6">
+                <div class="p-4">
+                  <div class="d-flex align-items-start mb-4">
+                    <div class="flex-shrink-0">
+                      <img src="https://via.placeholder.com/50" class="rounded-circle" width="50" height="50">
+                    </div>
+                    <div class="ms-3">
+                      <h6 class="fw-bold mb-0">Lorem Ipsum</h6>
+                      <p class="text-muted small">Product Designer</p>
+                    </div>
+                  </div>
+                  <p class="text-muted mb-0">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."</p>
+                  <div class="mt-3">
+                    <span class="badge bg-white text-primary border">Design</span>
+                    <span class="badge bg-white text-primary border ms-2">Tech</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="p-4">
+                  <div class="d-flex align-items-start mb-4">
+                    <div class="flex-shrink-0">
+                      <img src="https://via.placeholder.com/50" class="rounded-circle" width="50" height="50">
+                    </div>
+                    <div class="ms-3">
+                      <h6 class="fw-bold mb-0">Dolor Sit</h6>
+                      <p class="text-muted small">Marketing Lead</p>
+                    </div>
+                  </div>
+                  <p class="text-muted mb-0">"Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."</p>
+                  <div class="mt-3">
+                    <span class="badge bg-white text-primary border">Marketing</span>
+                    <span class="badge bg-white text-primary border ms-2">Growth</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>`
+},
+
+{
+    id: 'testimonial-side-image',
+    label: 'Testimonial – Side Image Layout',
+    category: 'Testimonials',
+    content: `
+<section class="py-5">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-5 mb-5 mb-lg-0">
+        <div class="position-relative">
+          <img src="https://via.placeholder.com/400x500" class="img-fluid rounded-4 shadow-lg" style="object-fit: cover; height: 500px;">
+          <div class="position-absolute bottom-0 start-0 bg-primary text-white p-4 rounded-end" style="transform: translateY(50%);">
+            <h4 class="fw-bold mb-0">4.9/5</h4>
+            <p class="small mb-0">Average Rating</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-7">
+        <h2 class="fw-bold display-5 mb-4">Real Stories from Real Users</h2>
+        <p class="text-muted lead mb-5">Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor.</p>
+
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="p-4 border-start border-3 border-primary">
+              <p class="text-muted mb-3">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore."</p>
+              <div class="d-flex align-items-center">
+                <img src="https://via.placeholder.com/40" class="rounded-circle me-3" width="40" height="40">
+                <div>
+                  <h6 class="fw-bold mb-0">Lorem Ipsum</h6>
+                  <p class="text-muted small mb-0">Product Designer</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="p-4 border-start border-3 border-success">
+              <p class="text-muted mb-3">"Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."</p>
+              <div class="d-flex align-items-center">
+                <img src="https://via.placeholder.com/40" class="rounded-circle me-3" width="40" height="40">
+                <div>
+                  <h6 class="fw-bold mb-0">Dolor Sit</h6>
+                  <p class="text-muted small mb-0">Marketing Lead</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="p-4 border-start border-3 border-warning">
+              <p class="text-muted mb-3">"Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."</p>
+              <div class="d-flex align-items-center">
+                <img src="https://via.placeholder.com/40" class="rounded-circle me-3" width="40" height="40">
+                <div>
+                  <h6 class="fw-bold mb-0">Amet Consectetur</h6>
+                  <p class="text-muted small mb-0">Startup Founder</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="p-4 border-start border-3 border-info">
+              <p class="text-muted mb-3">"Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+              <div class="d-flex align-items-center">
+                <img src="https://via.placeholder.com/40" class="rounded-circle me-3" width="40" height="40">
+                <div>
+                  <h6 class="fw-bold mb-0">Adipiscing Elit</h6>
+                  <p class="text-muted small mb-0">Tech Lead</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>`
+},
+
+{
+    id: 'testimonial-carousel-style',
+    label: 'Testimonial – Carousel Style',
+    category: 'Testimonials',
+    content: `
+<section class="py-5" style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold display-5 mb-3">Voices That Matter</h2>
+      <p class="text-muted mx-auto" style="max-width: 600px;">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor.
+      </p>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-xl-10">
+        <div class="row g-4">
+          <!-- Main testimonial -->
+          <div class="col-lg-8">
+            <div class="card border-0 shadow-lg rounded-4 h-100 overflow-hidden">
+              <div class="card-body p-5">
+                <div class="row align-items-center">
+                  <div class="col-md-4 text-center mb-4 mb-md-0">
+                    <img src="https://via.placeholder.com/120" class="rounded-circle shadow-lg" width="120" height="120">
+                  </div>
+                  <div class="col-md-8">
+                    <h4 class="fw-bold mb-3">"Lorem ipsum dolor sit amet, consectetur adipiscing elit."</h4>
+                    <p class="text-muted mb-4">Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
+                    <div>
+                      <h6 class="fw-bold mb-1">Lorem Ipsum</h6>
+                      <p class="text-muted small mb-0">Product Designer • TechCompany</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer bg-white border-0 py-3 px-5">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <span class="text-warning fs-5">★★★★★</span>
+                    <span class="text-muted ms-2">5.0 Rating</span>
+                  </div>
+                  <div class="text-primary">
+                    <span class="me-3">👈</span>
+                    <span>👉</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Side testimonials -->
+          <div class="col-lg-4">
+            <div class="d-flex flex-column gap-4">
+              <div class="p-4 bg-white rounded-4 shadow-sm">
+                <div class="d-flex align-items-center mb-3">
+                  <img src="https://via.placeholder.com/40" class="rounded-circle me-3" width="40" height="40">
+                  <div>
+                    <h6 class="fw-bold mb-0">Dolor Sit</h6>
+                    <p class="text-muted small mb-0">Marketing Lead</p>
+                  </div>
+                </div>
+                <p class="text-muted small mb-0">"Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris."</p>
+              </div>
+
+              <div class="p-4 bg-white rounded-4 shadow-sm">
+                <div class="d-flex align-items-center mb-3">
+                  <img src="https://via.placeholder.com/40" class="rounded-circle me-3" width="40" height="40">
+                  <div>
+                    <h6 class="fw-bold mb-0">Amet Consectetur</h6>
+                    <p class="text-muted small mb-0">Startup Founder</p>
+                  </div>
+                </div>
+                <p class="text-muted small mb-0">"Duis aute irure dolor in reprehenderit in voluptate velit."</p>
+              </div>
+
+              <div class="p-4 bg-white rounded-4 shadow-sm">
+                <div class="d-flex align-items-center mb-3">
+                  <img src="https://via.placeholder.com/40" class="rounded-circle me-3" width="40" height="40">
+                  <div>
+                    <h6 class="fw-bold mb-0">Adipiscing Elit</h6>
+                    <p class="text-muted small mb-0">Tech Lead</p>
+                  </div>
+                </div>
+                <p class="text-muted small mb-0">"Excepteur sint occaecat cupidatat non proident."</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>`
+},
+
+{
+  id: 'features-icon-grid',
+  label: 'Features – Icon Grid',
+  category: 'Sections',
+  content: `
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">Powerful Features</h2>
+      <p class="text-muted">Lorem ipsum dolor sit amet consectetur adipiscing elit</p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-4 text-center">
+        <div class="p-4 rounded-4 shadow-sm h-100">
+          <div class="fs-1 mb-3 text-primary">⚡</div>
+          <h5 class="fw-bold">Fast Performance</h5>
+          <p class="text-muted">Lorem ipsum dolor sit amet consectetur adipiscing elit.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4 text-center">
+        <div class="p-4 rounded-4 shadow-sm h-100">
+          <div class="fs-1 mb-3 text-primary">🔒</div>
+          <h5 class="fw-bold">Secure System</h5>
+          <p class="text-muted">Sed do eiusmod tempor incididunt ut labore.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4 text-center">
+        <div class="p-4 rounded-4 shadow-sm h-100">
+          <div class="fs-1 mb-3 text-primary">🎨</div>
+          <h5 class="fw-bold">Custom Design</h5>
+          <p class="text-muted">Ut enim ad minim veniam quis nostrud.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>`
+},
+
+                    /* =========================
+                       Pricing Section
+                     ========================== */
+{
+  id: 'pricing-circle',
+  label: 'Pricing - Circular Cards',
+  category: 'Pricing Layout',
+  content: `
+<style>
+.circle-card {
+  border-radius: 50%;
+  padding: 50px 0;
+  transition: transform 0.4s, box-shadow 0.4s;
+  text-align: center;
+  background: #0d6efd;
+  color: white;
+}
+.circle-card:hover {
+  transform: scale(1.1);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+}
+.circle-price {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+</style>
+
+<section class="py-5 bg-light">
+  <div class="container text-center">
+    <h2 class="fw-bold mb-5">Circular Pricing Cards</h2>
+    <div class="row g-4 justify-content-center">
+      <div class="col-md-3">
+        <div class="circle-card">
+          <h4>Starter</h4>
+          <div class="circle-price">$19</div>
+          <p>Lorem ipsum dolor sit amet.</p>
+          <a href="#" class="btn btn-light mt-2">Choose</a>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="circle-card bg-gradient">
+          <h4>Professional</h4>
+          <div class="circle-price">$49</div>
+          <p>Adipiscing elit sed do eiusmod.</p>
+          <a href="#" class="btn btn-light mt-2">Choose</a>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="circle-card">
+          <h4>Enterprise</h4>
+          <div class="circle-price">$99</div>
+          <p>Ut labore et dolore magna aliqua.</p>
+          <a href="#" class="btn btn-light mt-2">Choose</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>`
+},
+
+
+
+{
+  id: 'pricing-progress-bar',
+  label: 'Pricing - Progress Bar',
+  category: 'Pricing Layout',
+  content: `
+<style>
+.progress-bar-animated {
+  transition: width 1s ease-in-out;
+}
+.card:hover .progress-bar-animated {
+  width: 100%;
+}
+</style>
+
+<section class="py-5 bg-light">
+  <div class="container text-center">
+    <h2 class="fw-bold mb-5">Pricing with Animated Progress</h2>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card h-100 p-4">
+          <h4>Starter</h4>
+          <h2>$15</h2>
+          <p>Lorem ipsum dolor sit.</p>
+          <div class="progress my-3" style="height: 6px;">
+            <div class="progress-bar bg-primary progress-bar-animated" style="width:50%"></div>
+          </div>
+          <a href="#" class="btn btn-outline-primary mt-2">Select</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 p-4 shadow-lg">
+          <h4>Professional</h4>
+          <h2>$45</h2>
+          <p>Adipiscing elit sed do eiusmod.</p>
+          <div class="progress my-3" style="height: 6px;">
+            <div class="progress-bar bg-success progress-bar-animated" style="width:70%"></div>
+          </div>
+          <a href="#" class="btn btn-primary mt-2">Choose</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 p-4">
+          <h4>Enterprise</h4>
+          <h2>$85</h2>
+          <p>Ut labore et dolore magna aliqua.</p>
+          <div class="progress my-3" style="height: 6px;">
+            <div class="progress-bar bg-warning progress-bar-animated" style="width:90%"></div>
+          </div>
+          <a href="#" class="btn btn-outline-primary mt-2">Get Started</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>`
+},
+
+{
+  id: 'pricing-bounce',
+  label: 'Pricing - Bounce Animation',
+  category: 'Pricing Layout',
+  content: `
+<style>
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-15px); }
+  60% { transform: translateY(-7px); }
+}
+.bounce-card:hover {
+  animation: bounce 0.6s;
+}
+</style>
+
+<section class="py-5 bg-light">
+  <div class="container text-center">
+    <h2 class="fw-bold mb-5">Bounce Animation Pricing</h2>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card h-100 p-4 bounce-card">
+          <h4>Starter</h4>
+          <h2>$18</h2>
+          <p>Lorem ipsum dolor sit.</p>
+          <a href="#" class="btn btn-outline-primary mt-2">Select</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 p-4 bounce-card shadow-lg border-primary">
+          <h4>Pro</h4>
+          <h2>$48</h2>
+          <p>Adipiscing elit sed do eiusmod.</p>
+          <a href="#" class="btn btn-primary mt-2">Choose</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 p-4 bounce-card">
+          <h4>Enterprise</h4>
+          <h2>$95</h2>
+          <p>Ut labore et dolore magna aliqua.</p>
+          <a href="#" class="btn btn-outline-primary mt-2">Get Started</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>`
+},
+
+{
+  id: 'pricing-rotate',
+  label: 'Pricing - Rotate Cards',
+  category: 'Sections',
+  content: `
+<style>
+.rotate-card {
+  transition: transform 0.6s, box-shadow 0.4s;
+  transform-style: preserve-3d;
+}
+.rotate-card:hover {
+  transform: rotateY(10deg) rotateX(5deg) scale(1.05);
+  box-shadow: 0 20px 35px rgba(0,0,0,0.25);
+}
+</style>
+
+<section class="py-5 bg-light">
+  <div class="container text-center">
+    <h2 class="fw-bold mb-5">Rotating Pricing Cards</h2>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card rotate-card h-100 p-4">
+          <h4>Starter</h4>
+          <h2>$22</h2>
+          <p>Lorem ipsum dolor sit amet.</p>
+          <a href="#" class="btn btn-outline-primary mt-2">Select</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card rotate-card h-100 p-4 shadow-lg border-primary">
+          <h4>Professional</h4>
+          <h2>$52</h2>
+          <p>Adipiscing elit sed do eiusmod.</p>
+          <a href="#" class="btn btn-primary mt-2">Choose</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card rotate-card h-100 p-4">
+          <h4>Enterprise</h4>
+          <h2>$110</h2>
+          <p>Ut labore et dolore magna aliqua.</p>
+          <a href="#" class="btn btn-outline-primary mt-2">Get Started</a>
+        </div>
+      </div>
     </div>
   </div>
 </section>`
