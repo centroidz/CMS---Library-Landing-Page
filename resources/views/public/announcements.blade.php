@@ -1,3 +1,12 @@
+@extends('public.public')
+
+@section('title', 'Announcements')
+
+@section('content')
+@php
+    $announcements = $announcements ?? \App\Models\Announcement::latest()->get();
+@endphp
+
 <div class="container py-5">
     <div class="row mb-5">
         <div class="col-lg-8">
@@ -8,19 +17,25 @@
     </div>
 
     <div class="list-group list-group-flush shadow-sm rounded-4 bg-white overflow-hidden">
-        <div class="list-group-item p-4 border-0 border-bottom">
-            <div class="d-flex w-100 justify-content-between mb-2">
-                <h5 class="mb-1 fw-bold">New Digital Collection</h5>
-                <small class="text-muted">3 days ago</small>
+        @if(request()->has('preview_mode'))
+            <div class="list-group-item p-4 border-0 border-bottom bg-light">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                    <h5 class="mb-1 fw-bold text-primary">{{ request('title') }} <span class="badge bg-warning text-dark ms-2">Preview</span></h5>
+                    <small class="text-muted">{{ \Carbon\Carbon::parse(request('created_at'))->diffForHumans() }}</small>
+                </div>
+                <p class="mb-1 text-muted">{{ request('content') }}</p>
             </div>
-            <p class="mb-1 text-muted">We have added over 500 new e-books to the digital archive.</p>
-        </div>
-        <div class="list-group-item p-4 border-0">
-            <div class="d-flex w-100 justify-content-between mb-2">
-                <h5 class="mb-1 fw-bold">System Maintenance</h5>
-                <small class="text-muted">1 week ago</small>
+        @endif
+
+        @foreach($announcements as $announcement)
+            <div class="list-group-item p-4 border-0 border-bottom">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                    <h5 class="mb-1 fw-bold">{{ $announcement->title }}</h5>
+                    <small class="text-muted">{{ $announcement->created_at->diffForHumans() }}</small>
+                </div>
+                <p class="mb-1 text-muted">{{ $announcement->content }}</p>
             </div>
-            <p class="mb-1 text-muted">The library portal will be down for scheduled maintenance this Sunday.</p>
-        </div>
+        @endforeach
     </div>
 </div>
+@endsection
