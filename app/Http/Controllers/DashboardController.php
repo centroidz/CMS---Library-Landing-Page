@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Page;
+use App\Models\PageRequest;
 use App\Models\User;
 use App\Models\LandingPage; // Added this
 use Illuminate\Http\Request;
@@ -15,7 +16,17 @@ class DashboardController extends Controller
     public function index()
     {
         $pages = Page::orderBy('order_index', 'asc')->get();
-        return view('admin.index', compact('pages'));
+        
+        // Fetch pending requests for Admin
+        $pendingRequests = [];
+        if(auth()->user()->role === 'admin'){
+            $pendingRequests = PageRequest::where('status', 'pending')->with('user')->get();
+        }
+
+        // Fetch my requests (for Editor notification)
+        $myRequests = PageRequest::where('user_id', auth()->id())->orderBy('created_at', 'desc')->take(5)->get();
+
+        return view('admin.index', compact('pages', 'pendingRequests', 'myRequests'));
     }
 
     // Create a new dynamic page
@@ -131,5 +142,76 @@ class DashboardController extends Controller
         ]);
 
         return response()->json(['success' => true]);
+    }
+
+    // --- PAGE REQUEST LOGIC ---
+
+    // Editor submits a request
+    public function storePageRequest(Request $request)
+    {
+        $request->validate(['title' => 'required|string|max:255']);
+
+        // Check for duplicate pending requests
+        $exists = PageRequest::where('user_id', auth()->id())
+            ->where('title', $request->title)
+            ->where('status', 'pending')
+            ->exists();
+
+        if ($exists) {
+            return response()->json(['message' => 'You already have a pending request for this page.'], 422);
+        }
+
+        PageRequest::create([
+            'user_id' => auth()->id(),
+            'title' => $request->title,
+            'status' => 'pending'
+        ]);
+
+        return response()->json(['message' => 'Request sent to Admin successfully!']);
+    }
+
+    // Admin Approves a request
+    public function approveRequest($id)
+    {
+        $req = PageRequest::findOrFail($id);
+
+        if ($req->status !== 'pending') {
+            return back()->with('error', 'Request already processed.');
+        }
+
+        Page::create([
+            'title' => $req->title,
+            'slug' => Str::slug($req->title),
+            'is_default' => false,
+            'order_index' => Page::count() + 1,
+        ]);
+
+        $req->update(['status' => 'approved']);
+
+        return back()->with('success', "Page '{$req->title}' created successfully!");
+    }
+
+    // Admin Rejects a request
+    public function rejectRequest($id)
+    {
+        $req = PageRequest::findOrFail($id);
+        $req->update(['status' => 'rejected']);
+
+        return back()->with('success', 'Request rejected.');
+    }
+
+    public function destroyPageRequest($id)
+    {
+        // Find the request, ensuring it belongs to the logged-in user
+        $req = PageRequest::where('user_id', auth()->id())->findOrFail($id);
+
+        // Optional: specific check if you strictly want to prevent deleting 'pending' requests
+        if ($req->status === 'pending') {
+             return back()->with('error', 'You cannot delete a pending request.');
+        }
+
+        $req->delete();
+
+        return back()->with('success', 'Notification removed.');
     }
 }

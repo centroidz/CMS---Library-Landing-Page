@@ -51,6 +51,11 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::patch('/profile/password', [ProfileController::class, 'updatePassword'])->name('admin.profile.password');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('admin.profile.destroy');
 
+        // Page Request Submission (for Editors)
+        Route::post('/page-request', [DashboardController::class, 'storePageRequest'])->name('page_requests.store');
+        Route::delete('/page-request/{id}', [DashboardController::class, 'destroyPageRequest'])
+        ->name('page_requests.destroy');
+
         // ADMIN ONLY
         Route::middleware(['role:admin'])->group(function () {
 
@@ -66,6 +71,10 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
             //staff management
             Route::get('/staff', [DashboardController::class, 'staffIndex'])->name('admin.staff');
+
+            // Page Requests
+            Route::post('/page-request/{id}/approve', [DashboardController::class, 'approveRequest'])->name('page_requests.approve');
+            Route::post('/page-request/{id}/reject', [DashboardController::class, 'rejectRequest'])->name('page_requests.reject');
         });
 
         // ADMIN & MODERATOR ONLY
