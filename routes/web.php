@@ -26,6 +26,9 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/setup', [AccountSetupController::class, 'create'])->name('account.setup.create');
     Route::post('/setup', [AccountSetupController::class, 'store'])->name('account.setup.store');
 
+    // Page Request Submission (for Editors)
+    Route::post('/page-request', [DashboardController::class, 'storePageRequest'])->name('page_requests.store');
+
     Route::middleware([EnsureProfileSetup::class])->group(function () {
 
         // Dashboard (Accessible by admin, moderator, editor)
@@ -66,6 +69,10 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
             //staff management
             Route::get('/staff', [DashboardController::class, 'staffIndex'])->name('admin.staff');
+
+            // Page Requests
+            Route::post('/page-request/{id}/approve', [DashboardController::class, 'approveRequest'])->name('page_requests.approve');
+            Route::post('/page-request/{id}/reject', [DashboardController::class, 'rejectRequest'])->name('page_requests.reject');
         });
 
         // ADMIN & MODERATOR ONLY

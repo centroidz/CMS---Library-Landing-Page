@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="container-fluid">
+        @include('admin.notification')
         <div class="row mb-4 align-items-center">
             <div class="col">
                 <h2 class="fw-bold">Website Navigation</h2>
