@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccountSetupController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\EnsureProfileSetup;
+use App\Http\Controllers\AnnouncementController;
 
 // Public Route
 Route::get('/', function () {
@@ -29,7 +30,10 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
         // Dashboard (Accessible by admin, moderator, editor)
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-        Route::get('/announcements', [DashboardController::class, 'announcementsIndex'])->name('admin.announcements');
+        Route::get('/announcements', [AnnouncementController::class, 'indexAdmin'])->name('admin.announcements');
+        Route::post('/announcements', [AnnouncementController::class, 'store'])->name('admin.announcements.store');
+        Route::put('/announcements/{id}', [AnnouncementController::class, 'update'])->name('admin.announcements.update');
+        Route::delete('/announcements/{id}', [AnnouncementController::class, 'destroy'])->name('admin.announcements.destroy');
         Route::get('/staff-page', [DashboardController::class, 'staffPage'])->name('admin.staff-page');
         Route::get('/editor/{id}', [DashboardController::class, 'editor'])->name('admin.editor');
         Route::post('/editor/{id}/save', [DashboardController::class, 'saveEditor'])->name('admin.editor.save');
@@ -76,3 +80,6 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
 // Redirect /admin to dashboard (will hit auth middleware if not logged in)
 Route::redirect('/admin', '/admin/dashboard');
+
+// Public Route
+Route::get('/announcements', [AnnouncementController::class, 'indexPublic']);
