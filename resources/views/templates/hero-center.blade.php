@@ -112,7 +112,7 @@
             transition: all 0.3s ease;
             color: var(--text-main);
         }
-
+        
         .link-preview-card:hover {
             background: #2d3a4f;
             color: var(--primary);
