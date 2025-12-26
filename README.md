@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![GrapesJS](https://img.shields.io/badge/Editor-GrapesJS-green.svg)](https://grapesjs.com)
 
-> **Official CMS for [keeper.css-octa.com](https://keeper.css-octa.com)** > A high-performance, flexible CMS built on Laravel MVC, featuring a headless API architecture for seamless content delivery.
+> **Official CMS for [keeper.css-octa.com](https://keeper.ccs-octa.com/)** > A high-performance, flexible CMS built on Laravel MVC, featuring a headless API architecture for seamless content delivery.
 
 ---
 
