@@ -26,9 +26,6 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/setup', [AccountSetupController::class, 'create'])->name('account.setup.create');
     Route::post('/setup', [AccountSetupController::class, 'store'])->name('account.setup.store');
 
-    // Page Request Submission (for Editors)
-    Route::post('/page-request', [DashboardController::class, 'storePageRequest'])->name('page_requests.store');
-
     Route::middleware([EnsureProfileSetup::class])->group(function () {
 
         // Dashboard (Accessible by admin, moderator, editor)
@@ -53,6 +50,11 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::patch('/profile', [ProfileController::class, 'update'])->name('admin.profile.update');
         Route::patch('/profile/password', [ProfileController::class, 'updatePassword'])->name('admin.profile.password');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('admin.profile.destroy');
+
+        // Page Request Submission (for Editors)
+        Route::post('/page-request', [DashboardController::class, 'storePageRequest'])->name('page_requests.store');
+        Route::delete('/page-request/{id}', [DashboardController::class, 'destroyPageRequest'])
+        ->name('page_requests.destroy');
 
         // ADMIN ONLY
         Route::middleware(['role:admin'])->group(function () {

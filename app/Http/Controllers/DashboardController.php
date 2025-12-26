@@ -199,4 +199,19 @@ class DashboardController extends Controller
 
         return back()->with('success', 'Request rejected.');
     }
+
+    public function destroyPageRequest($id)
+    {
+        // Find the request, ensuring it belongs to the logged-in user
+        $req = PageRequest::where('user_id', auth()->id())->findOrFail($id);
+
+        // Optional: specific check if you strictly want to prevent deleting 'pending' requests
+        if ($req->status === 'pending') {
+             return back()->with('error', 'You cannot delete a pending request.');
+        }
+
+        $req->delete();
+
+        return back()->with('success', 'Notification removed.');
+    }
 }
