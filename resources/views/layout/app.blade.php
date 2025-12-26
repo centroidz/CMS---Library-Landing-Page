@@ -126,7 +126,15 @@
                 <span class="fs-4">LIBRARY ADMIN</span>
             </div>
 
+
             <ul class="list-unstyled components">
+
+                <li class="{{ request()->routeIs('admin.profile.edit') ? 'active' : '' }}">
+                    <a href="{{ route('admin.profile.edit') }}">
+                        <span><i class="bi bi-person-circle nav-icon"></i> Profile Settings</span>
+                    </a>
+                </li>
+
                 <li class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                     <a href="{{ route('admin.dashboard') }}">
                         <span><i class="bi bi-speedometer2 nav-icon"></i> Dashboard</span>
@@ -161,17 +169,13 @@
                         <i class="bi bi-pencil-square edit-badge"></i>
                     </a>
                 </li>
-                <li class="{{ request()->routeIs('admin.profile.edit') ? 'active' : '' }}">
-                    <a href="{{ route('admin.profile.edit') }}">
-                        <span><i class="bi bi-person-circle nav-icon"></i> Profile Settings</span>
-                        <i class="bi bi-pencil-square edit-badge"></i>
-                    </a>
-                </li>
+
             </ul>
         </nav>
 
         <div id="content">
-            <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm" style="position: sticky; top: 0; z-index: 1020;">
+            <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm"
+                style="position: sticky; top: 0; z-index: 1020;">
                 <div class="container-fluid">
                     <button class="btn btn-outline-secondary d-lg-none me-2" id="sidebarToggle"><i
                             class="bi bi-list"></i></button>
