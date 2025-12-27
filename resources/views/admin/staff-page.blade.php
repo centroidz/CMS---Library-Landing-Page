@@ -69,7 +69,7 @@
                                         </div>
                                     </div>
                                     <button class="btn btn-sm btn-primary shadow-sm"
-                                        onclick="openEditModal({{ $user->id }}, '{{ addslashes($user->name) }}', {{ $user->is_public ? 'true' : 'false' }})">
+                                        onclick="openEditModal({{ $user->id }}, '{{ addslashes($user->name) }}', {{ $user->is_public ? 'true' : 'false' }}, '{{ $user->profile_image }}')">
                                         <i class="bi bi-pencil-square"></i>
                                     </button>
                                 </div>
@@ -106,6 +106,7 @@
                     </div>
                     <div class="modal-body">
                         <input type="hidden" id="edit_user_id">
+                        <input type="hidden" id="current_profile_image">
 
                         <div class="mb-3">
                             <label class="form-label small fw-bold">DISPLAY NAME</label>
@@ -139,13 +140,25 @@
         let userModal;
         document.addEventListener('DOMContentLoaded', function () {
             userModal = new bootstrap.Modal(document.getElementById('editUserModal'));
+
+            // Add event listener for file input to enable/disable showcase
+            document.getElementById('edit_image').addEventListener('change', function () {
+                const hasFile = this.files.length > 0;
+                const hasCurrent = document.getElementById('current_profile_image').value;
+                document.getElementById('is_showcased').disabled = !(hasCurrent || hasFile);
+            });
         });
 
-        function openEditModal(userId, userName, isPublic) {
+        function openEditModal(userId, userName, isPublic, profileImage) {
             // Pre-fill form fields
             document.getElementById('edit_user_id').value = userId;
             document.getElementById('edit_name').value = userName;
             document.getElementById('is_showcased').checked = isPublic;
+            document.getElementById('current_profile_image').value = profileImage;
+
+            // Disable showcase if no profile image
+            const hasCurrent = profileImage;
+            document.getElementById('is_showcased').disabled = !hasCurrent;
 
             // Clear file input
             document.getElementById('edit_image').value = '';

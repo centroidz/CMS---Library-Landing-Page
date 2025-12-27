@@ -9,6 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 
+
     <style>
         body {
             overflow-x: hidden;
@@ -175,7 +176,7 @@
 
         <div id="content">
             <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm"
-                style="position: sticky; top: 0; z-index: 1020;">
+                style="position: sticky; top: 0; z-index: 1050;">
                 <div class="container-fluid">
                     <button class="btn btn-outline-secondary d-lg-none me-2" id="sidebarToggle"><i
                             class="bi bi-list"></i></button>
@@ -235,99 +236,99 @@
         });
 
         // Variable to hold the data user TRIED to submit
-    let pendingSubmission = null;
+        let pendingSubmission = null;
 
-    document.addEventListener('submit', function (e) {
-        const form = e.target.closest('.role-protected-form');
-        if (!form) return;
+        document.addEventListener('submit', function (e) {
+            const form = e.target.closest('.role-protected-form');
+            if (!form) return;
 
-        const button = form.querySelector('[type="submit"][data-role]');
-        if (!button) return;
+            const button = form.querySelector('[type="submit"][data-role]');
+            if (!button) return;
 
-        const role = button.dataset.role;
+            const role = button.dataset.role;
 
-        // Allowed roles logic
-        let allowedRoles = ['admin']; 
-        if (form.action.includes('pages/store')) {
-             // Technically we block editor here so we can show the special modal
-             // If you want Editor to pass standard check, add 'editor' here. 
-             // But we want to trigger the modal, so we leave it as 'admin' only for now.
-             allowedRoles = ['admin', 'moderator']; 
-        }
+            // Allowed roles logic
+            let allowedRoles = ['admin'];
+            if (form.action.includes('pages/store')) {
+                // Technically we block editor here so we can show the special modal
+                // If you want Editor to pass standard check, add 'editor' here.
+                // But we want to trigger the modal, so we leave it as 'admin' only for now.
+                allowedRoles = ['admin', 'moderator'];
+            }
 
-        if (!allowedRoles.includes(role)) {
-            e.preventDefault();
+            if (!allowedRoles.includes(role)) {
+                e.preventDefault();
 
-            const modalEl = document.getElementById('unauthorizedModal');
-            const bsModal = new bootstrap.Modal(modalEl);
+                const modalEl = document.getElementById('unauthorizedModal');
+                const bsModal = new bootstrap.Modal(modalEl);
 
-            // CHECK: Is this a "Create Page" attempt?
-            const titleInput = form.querySelector('input[name="title"]');
-            
-            if (titleInput && form.action.includes('pages/store')) {
-                // It is a Create Page attempt. Customize the modal!
-                document.getElementById('unauth-title').innerText = "Permission Required";
-                document.getElementById('unauth-body').innerHTML = `
+                // CHECK: Is this a "Create Page" attempt?
+                const titleInput = form.querySelector('input[name="title"]');
+
+                if (titleInput && form.action.includes('pages/store')) {
+                    // It is a Create Page attempt. Customize the modal!
+                    document.getElementById('unauth-title').innerText = "Permission Required";
+                    document.getElementById('unauth-body').innerHTML = `
                     <p>Editors cannot create pages directly.</p>
                     <p>Would you like to request the Admin to create <strong>"${titleInput.value}"</strong>?</p>
                 `;
-                
-                // Show the Request Button, Hide the OK button
-                document.getElementById('btn-request-access').classList.remove('d-none');
-                document.getElementById('btn-ok-access').classList.add('d-none');
 
-                // Store the title to submit later
-                pendingSubmission = titleInput.value;
-            } else {
-                // Standard Unauthorized message
-                document.getElementById('unauth-title').innerText = "403 – Access Denied";
-                document.getElementById('unauth-body').innerHTML = "<p>You don’t have permission to access this section!</p>";
-                document.getElementById('btn-request-access').classList.add('d-none');
-                document.getElementById('btn-ok-access').classList.remove('d-none');
+                    // Show the Request Button, Hide the OK button
+                    document.getElementById('btn-request-access').classList.remove('d-none');
+                    document.getElementById('btn-ok-access').classList.add('d-none');
+
+                    // Store the title to submit later
+                    pendingSubmission = titleInput.value;
+                } else {
+                    // Standard Unauthorized message
+                    document.getElementById('unauth-title').innerText = "403 – Access Denied";
+                    document.getElementById('unauth-body').innerHTML = "<p>You don’t have permission to access this section!</p>";
+                    document.getElementById('btn-request-access').classList.add('d-none');
+                    document.getElementById('btn-ok-access').classList.remove('d-none');
+                }
+
+                bsModal.show();
+                return false;
             }
 
-            bsModal.show();
-            return false;
-        }
+            // Delete Confirmation Logic (Existing)
+            if (form.action.includes('pages/') && form.method.toLowerCase() === 'post' &&
+                form.querySelector('[name="_method"][value="DELETE"]')) {
+                return confirm('Are you sure you want to delete this page?');
+            }
 
-        // Delete Confirmation Logic (Existing)
-        if (form.action.includes('pages/') && form.method.toLowerCase() === 'post' &&
-            form.querySelector('[name="_method"][value="DELETE"]')) {
-            return confirm('Are you sure you want to delete this page?');
-        }
-
-        return true;
-    });
-
-    // Handle the "Request Approval" click
-    document.getElementById('btn-request-access').addEventListener('click', function() {
-        if(!pendingSubmission) return;
-
-        const btn = this;
-        btn.disabled = true;
-        btn.innerText = "Sending...";
-
-        fetch("{{ route('page_requests.store') }}", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": "{{ csrf_token() }}"
-            },
-            body: JSON.stringify({ title: pendingSubmission })
-        })
-        .then(response => response.json())
-        .then(data => {
-            alert(data.message || 'Request sent!');
-            location.reload(); // Reload to clear modal state
-        })
-        .catch(err => {
-            console.error(err);
-            console.log(err);
-            alert('Something went wrong.');
-            btn.disabled = false;
-            btn.innerText = "Request Approval";
+            return true;
         });
-    });
+
+        // Handle the "Request Approval" click
+        document.getElementById('btn-request-access').addEventListener('click', function () {
+            if (!pendingSubmission) return;
+
+            const btn = this;
+            btn.disabled = true;
+            btn.innerText = "Sending...";
+
+            fetch("{{ route('page_requests.store') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                body: JSON.stringify({ title: pendingSubmission })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message || 'Request sent!');
+                    location.reload(); // Reload to clear modal state
+                })
+                .catch(err => {
+                    console.error(err);
+                    console.log(err);
+                    alert('Something went wrong.');
+                    btn.disabled = false;
+                    btn.innerText = "Request Approval";
+                });
+        });
 
         // Sidebar toggle
         const sidebar = document.getElementById('sidebar');
