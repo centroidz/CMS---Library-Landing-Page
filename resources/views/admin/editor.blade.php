@@ -1381,6 +1381,85 @@
 },
 
 
+                    {
+                        id: 'pricing-modern-cards',
+                        label: 'Pricing – Modern Cards',
+                        category: 'Pricing Layout',
+                        content: `
+      <section class="py-5 bg-light">
+        <div class="container">
+          <div class="text-center mb-5">
+            <h2 class="fw-bold display-5 mb-3">Lorem Ipsum Dolor</h2>
+            <p class="text-muted fs-5">Lorem ipsum dolor sit amet consectetur</p>
+          </div>
+          <div class="row g-4 justify-content-center">
+            <div class="col-lg-4 col-md-6">
+              <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-5 text-center">
+                  <h5 class="fw-bold mb-3">Lorem</h5>
+                  <div class="mb-4">
+                    <span class="display-4 fw-bold">$29</span>
+                    <span class="text-muted">/month</span>
+                  </div>
+                  <p class="text-muted mb-4">Lorem ipsum dolor sit amet</p>
+                  <ul class="list-unstyled text-start mb-4">
+                    <li class="mb-2">✓ Lorem ipsum dolor</li>
+                    <li class="mb-2">✓ Consectetur adipiscing</li>
+                    <li class="mb-2">✓ Sed do eiusmod</li>
+                    <li class="mb-2">✓ Tempor incididunt</li>
+                  </ul>
+                  <a href="#" class="btn btn-outline-primary w-100">Lorem Ipsum</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+              <div class="card border-primary border-3 shadow-lg h-100 position-relative">
+                <div class="position-absolute top-0 start-50 translate-middle">
+                  <span class="badge bg-primary px-3 py-2">LOREM IPSUM</span>
+                </div>
+                <div class="card-body p-5 text-center">
+                  <h5 class="fw-bold mb-3">Dolor Sit</h5>
+                  <div class="mb-4">
+                    <span class="display-4 fw-bold">$79</span>
+                    <span class="text-muted">/month</span>
+                  </div>
+                  <p class="text-muted mb-4">Lorem ipsum dolor sit amet</p>
+                  <ul class="list-unstyled text-start mb-4">
+                    <li class="mb-2">✓ Lorem ipsum dolor</li>
+                    <li class="mb-2">✓ Consectetur adipiscing</li>
+                    <li class="mb-2">✓ Sed do eiusmod</li>
+                    <li class="mb-2">✓ Tempor incididunt</li>
+                    <li class="mb-2">✓ Ut labore et dolore</li>
+                  </ul>
+                  <a href="#" class="btn btn-primary w-100">Lorem Ipsum</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+              <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-5 text-center">
+                  <h5 class="fw-bold mb-3">Consectetur</h5>
+                  <div class="mb-4">
+                    <span class="display-4 fw-bold">Custom</span>
+                  </div>
+                  <p class="text-muted mb-4">Lorem ipsum dolor sit amet</p>
+                  <ul class="list-unstyled text-start mb-4">
+                    <li class="mb-2">✓ Lorem ipsum dolor</li>
+                    <li class="mb-2">✓ Consectetur adipiscing</li>
+                    <li class="mb-2">✓ Sed do eiusmod</li>
+                    <li class="mb-2">✓ Tempor incididunt</li>
+                    <li class="mb-2">✓ Ut labore et dolore</li>
+                  </ul>
+                  <a href="#" class="btn btn-outline-primary w-100">Lorem Ipsum</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>`
+                    },
+
+
 
 {
   id: 'pricing-progress-bar',
@@ -1488,53 +1567,83 @@
 },
 
 {
-  id: 'pricing-rotate',
-  label: 'Pricing - Rotate Cards',
-  category: 'Sections',
-  content: `
-<style>
-.rotate-card {
-  transition: transform 0.6s, box-shadow 0.4s;
-  transform-style: preserve-3d;
-}
-.rotate-card:hover {
-  transform: rotateY(10deg) rotateX(5deg) scale(1.05);
-  box-shadow: 0 20px 35px rgba(0,0,0,0.25);
-}
-</style>
-
-<section class="py-5 bg-light">
-  <div class="container text-center">
-    <h2 class="fw-bold mb-5">Rotating Pricing Cards</h2>
-    <div class="row g-4">
-      <div class="col-md-4">
-        <div class="card rotate-card h-100 p-4">
-          <h4>Starter</h4>
-          <h2>$22</h2>
-          <p>Lorem ipsum dolor sit amet.</p>
-          <a href="#" class="btn btn-outline-primary mt-2">Select</a>
+                        id: 'pricing-toggle-switch',
+                        label: 'Pricing – Monthly/Yearly',
+                        category: 'Pricing Layout',
+                        content: `
+      <section class="py-5">
+        <div class="container">
+          <div class="text-center mb-5">
+            <h2 class="fw-bold display-5 mb-4">Lorem Ipsum Dolor</h2>
+            <div class="d-inline-flex bg-light rounded-pill p-1">
+              <button class="btn btn-primary rounded-pill px-4">Lorem</button>
+              <button class="btn btn-light rounded-pill px-4">Ipsum <span class="badge bg-success ms-1">-20%</span></button>
+            </div>
+          </div>
+          <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+              <div class="bg-light rounded-4 p-4 h-100">
+                <h5 class="fw-bold mb-3">Lorem</h5>
+                <div class="mb-4">
+                  <h2 class="fw-bold mb-0">$19<small class="text-muted fs-6">/mo</small></h2>
+                </div>
+                <ul class="list-unstyled mb-4 small">
+                  <li class="mb-2">✓ Lorem ipsum</li>
+                  <li class="mb-2">✓ Dolor sit amet</li>
+                  <li class="mb-2">✓ Consectetur</li>
+                </ul>
+                <a href="#" class="btn btn-outline-dark w-100">Lorem Ipsum</a>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="bg-primary text-white rounded-4 p-4 h-100">
+                <h5 class="fw-bold mb-3">Ipsum</h5>
+                <div class="mb-4">
+                  <h2 class="fw-bold mb-0">$49<small class="opacity-75 fs-6">/mo</small></h2>
+                </div>
+                <ul class="list-unstyled mb-4 small">
+                  <li class="mb-2">✓ Lorem ipsum</li>
+                  <li class="mb-2">✓ Dolor sit amet</li>
+                  <li class="mb-2">✓ Consectetur</li>
+                  <li class="mb-2">✓ Adipiscing elit</li>
+                </ul>
+                <a href="#" class="btn btn-light w-100">Lorem Ipsum</a>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="bg-light rounded-4 p-4 h-100">
+                <h5 class="fw-bold mb-3">Dolor</h5>
+                <div class="mb-4">
+                  <h2 class="fw-bold mb-0">$99<small class="text-muted fs-6">/mo</small></h2>
+                </div>
+                <ul class="list-unstyled mb-4 small">
+                  <li class="mb-2">✓ Lorem ipsum</li>
+                  <li class="mb-2">✓ Dolor sit amet</li>
+                  <li class="mb-2">✓ Consectetur</li>
+                  <li class="mb-2">✓ Adipiscing elit</li>
+                </ul>
+                <a href="#" class="btn btn-outline-dark w-100">Lorem Ipsum</a>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="bg-light rounded-4 p-4 h-100">
+                <h5 class="fw-bold mb-3">Sit Amet</h5>
+                <div class="mb-4">
+                  <h2 class="fw-bold mb-0">Custom</h2>
+                </div>
+                <ul class="list-unstyled mb-4 small">
+                  <li class="mb-2">✓ Lorem ipsum</li>
+                  <li class="mb-2">✓ Dolor sit amet</li>
+                  <li class="mb-2">✓ Consectetur</li>
+                  <li class="mb-2">✓ Adipiscing elit</li>
+                </ul>
+                <a href="#" class="btn btn-outline-dark w-100">Lorem Ipsum</a>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card rotate-card h-100 p-4 shadow-lg border-primary">
-          <h4>Professional</h4>
-          <h2>$52</h2>
-          <p>Adipiscing elit sed do eiusmod.</p>
-          <a href="#" class="btn btn-primary mt-2">Choose</a>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card rotate-card h-100 p-4">
-          <h4>Enterprise</h4>
-          <h2>$110</h2>
-          <p>Ut labore et dolore magna aliqua.</p>
-          <a href="#" class="btn btn-outline-primary mt-2">Get Started</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>`
-},
+      </section>`
+                    },
 
 
 
