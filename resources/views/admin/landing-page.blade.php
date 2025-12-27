@@ -41,12 +41,11 @@
                         <div class="mb-3">
                             <label class="form-label fw-bold small text-uppercase">Template</label>
                             <select id="template" class="form-select">
-                                <option value="hero-left" {{ $page->template == 'hero-left' ? 'selected' : '' }}>Hero Left
-                                </option>
-                                <option value="hero-center" {{ $page->template == 'hero-center' ? 'selected' : '' }}>Hero
-                                    Center</option>
-                                <option value="split" {{ $page->template == 'split' ? 'selected' : '' }}>Split Layout
-                                </option>
+                                <option value="hero-left" {{ $page->template == 'hero-left' ? 'selected' : '' }}>Hero Left</option>
+                                <option value="hero-center" {{ $page->template == 'hero-center' ? 'selected' : '' }}>Hero Center</option>
+                                <option value="split-layout" {{ $page->template == 'split-layout' ? 'selected' : '' }}>Split Layout</option>
+                                <option value="hero-right" {{ $page->template == 'hero-right' ? 'selected' : '' }}>Hero Right</option>
+                                <option value="stacked" {{ $page->template == 'stacked' ? 'selected' : '' }}>Stacked</option>
                             </select>
                         </div>
 
