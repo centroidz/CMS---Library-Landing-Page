@@ -4,31 +4,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library - Redesign</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap"
         rel="stylesheet">
 
     <style>
         :root {
-            /* Dark Mode Palette */
-            --primary: #818cf8;
-            --accent: #c084fc;
-            --primary-gradient: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            --bg-dark: #0f172a;
-            /* Deep Slate */
-            --bg-card: #1e293b;
-            /* Lighter Slate */
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-color: rgba(255, 255, 255, 0.1);
-            --glass: rgba(15, 23, 42, 0.8);
+            /* Blue Ribbon Palette */
+            --br-50: #eef5ff;
+            --br-100: #d9e8ff;
+            --br-200: #bcd8ff;
+            --br-400: #599dff;
+            --br-500: #2a71fe;
+            /* Primary Action */
+            --br-600: #1c56f4;
+            --br-950: #142157;
+            /* Dark Text */
+
+            --bg-body: #f8faff;
+            --bg-card: #ffffff;
+            --text-main: var(--br-950);
+            --text-muted: #64748b;
+            --border-soft: var(--br-100);
+            --shadow: 0 10px 30px -5px rgba(25, 51, 143, 0.08);
         }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             color: var(--text-main);
-            background-color: var(--bg-dark);
+            background-color: var(--bg-body);
             overflow-x: hidden;
             line-height: 1.6;
         }
@@ -36,29 +42,36 @@
         /* --- Navigation --- */
         .navbar {
             backdrop-filter: blur(12px);
-            background: var(--glass);
-            border-bottom: 1px solid var(--border-color);
-            padding: 1rem 0;
+            background: rgba(255, 255, 255, 0.8);
+            border-bottom: 1px solid var(--border-soft);
+            padding: 1.2rem 0;
+        }
+
+        .navbar-brand {
+            color: var(--br-950) !important;
+            letter-spacing: -0.5px;
         }
 
         .nav-link {
-            color: var(--text-main) !important;
+            color: var(--br-950) !important;
+            font-size: 0.95rem;
+            margin: 0 10px;
         }
 
-        /* --- Hero Section --- */
+        /* --- Section Styling --- */
         .hero-section {
-            padding: 140px 0 60px;
-            /* Dark glow effects */
-            background: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.15), transparent 50%),
-                radial-gradient(circle at bottom left, rgba(168, 85, 247, 0.05), transparent);
-            text-align: center;
+            padding: 160px 0 100px;
+            /* Mimics the soft circular pattern in your reference image */
+            background-image:
+                radial-gradient(circle at 15% 50%, var(--br-50) 0%, transparent 40%),
+                radial-gradient(circle at 85% 30%, #f0f4ff 0%, transparent 40%);
         }
 
         .section-tag {
             display: inline-block;
             padding: 6px 16px;
-            background: rgba(129, 140, 248, 0.15);
-            color: var(--primary);
+            background: var(--br-50);
+            color: var(--br-500);
             border-radius: 100px;
             font-size: 0.75rem;
             font-weight: 700;
@@ -68,68 +81,97 @@
 
         .display-3 {
             font-weight: 800;
+            color: var(--br-950);
             letter-spacing: -0.04em;
-            background: linear-gradient(to bottom right, #ffffff 30%, #94a3b8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
-        /* --- Cards --- */
+        /* --- Card UI (Based on Image) --- */
         .card-feature {
-            border: 1px solid var(--border-color);
-            border-radius: 28px;
+            border: 1px solid var(--border-soft);
+            border-radius: 32px;
+            /* Extra rounded as seen in UI */
             padding: 40px;
             background: var(--bg-card);
-            transition: all 0.4s ease;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
             height: 100%;
+            box-shadow: var(--shadow);
         }
 
         .card-feature:hover {
-            border-color: var(--primary);
             transform: translateY(-8px);
-            background: #243049;
+            border-color: var(--br-500);
+            box-shadow: 0 20px 40px -10px rgba(42, 113, 254, 0.15);
         }
 
         .hero-img-container {
             max-width: 900px;
             margin: 0 auto;
-            border-radius: 32px;
+            border-radius: 40px;
             overflow: hidden;
-            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--border-color);
-            background: var(--bg-card);
+            box-shadow: var(--shadow);
+            border: 8px solid white;
+            /* Frame effect */
+            background: white;
         }
 
-        /* --- Link Cards --- */
+        /* --- Buttons --- */
+        .btn-modern {
+            background: var(--br-500);
+            color: white;
+            border-radius: 16px;
+            padding: 14px 32px;
+            font-weight: 600;
+            border: none;
+            transition: 0.3s;
+        }
+
+        .btn-modern:hover {
+            background: var(--br-600);
+            transform: scale(1.02);
+            color: white;
+        }
+
+        /* --- Resource Cards --- */
         .link-preview-card {
             display: flex;
             gap: 16px;
             background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 20px;
+            border: 1px solid var(--border-soft);
+            border-radius: 24px;
+            padding: 24px;
             text-decoration: none;
             transition: all 0.3s ease;
             color: var(--text-main);
         }
 
         .link-preview-card:hover {
-            background: #2d3a4f;
-            color: var(--primary);
-            border-color: var(--primary);
+            background: var(--br-50);
+            border-color: var(--br-200);
         }
 
         .link-thumbnail {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--primary);
+            width: 48px;
+            height: 48px;
+            min-width: 48px;
+            background: var(--br-50);
+            color: var(--br-500);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
         }
 
-        .text-muted {
-            color: var(--text-muted) !important;
+        .goals-section {
+            background: var(--br-500);
+            padding: 100px 0;
+            border-radius: 50px;
+            margin: 60px 20px;
+            color: white;
         }
 
         #page-content-area {
-            padding-top: 90px;
+            padding-top: 0;
         }
     </style>
 </head>
@@ -138,23 +180,17 @@
 
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
-            <a class="navbar-brand fw-bold fs-4 text-white" href="#" onclick="loadPage('landing'); return false;">
+            <a class="navbar-brand fw-bold fs-4" href="#">
                 <i class="bi bi-hexagon-fill text-primary me-2"></i>LIBRARY
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navRes">
-                <span class="navbar-toggler-icon navbar-dark"></span>
+                <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navRes">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    @php $navPages = \App\Models\Page::orderBy('order_index')->get(); @endphp
-                    @foreach($navPages as $navPage)
-                        <li class="nav-item">
-                            <a class="nav-link fw-semibold" href="#"
-                                onclick="loadPage('{{ $navPage->slug }}'); return false;">
-                                {{ $navPage->title }}
-                            </a>
-                        </li>
-                    @endforeach
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 fw-semibold">
+                    <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Portfolio</a></li>
                 </ul>
             </div>
         </div>
@@ -164,20 +200,6 @@
         @include('templates.partials.hero-center_content')
     </div>
 
-    <script>
-        function loadPage(slug) {
-            const contentArea = document.getElementById('page-content-area');
-            fetch(`/api/page/${slug}`)
-                .then(res => res.text())
-                .then(html => {
-                    contentArea.innerHTML = html;
-                    window.scrollTo(0, 0);
-                    const bsCollapse = bootstrap.Collapse.getInstance(document.getElementById('navRes'));
-                    if (bsCollapse) bsCollapse.hide();
-                })
-                .catch(err => console.error("Error:", err));
-        }
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
