@@ -97,6 +97,14 @@
                             </div>
 
                             <div class="mb-3">
+                                <label class="form-label fw-bold small text-uppercase">Image</label>
+                                <input type="file" id="image" class="form-control" accept="image/*">
+                                <div id="imagePreviewContainer" class="mt-2 d-none">
+                                    <img id="imagePreview" src="" class="img-fluid rounded" style="max-height: 200px;">
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
                                 <label class="form-label fw-bold small text-uppercase">Content</label>
                                 <textarea id="announcementContent" class="form-control" rows="6" placeholder="Write your announcement here..."></textarea>
                             </div>
@@ -140,6 +148,9 @@
         // Form Elements
         const idInput = document.getElementById('id');
         const titleInput = document.getElementById('title');
+        const imageInput = document.getElementById('image');
+        const imagePreview = document.getElementById('imagePreview');
+        const imagePreviewContainer = document.getElementById('imagePreviewContainer');
         const contentInput = document.getElementById('announcementContent');
         const createdAtInput = document.getElementById('created_at');
         const deleteBtn = document.getElementById('deleteBtn');
@@ -147,6 +158,8 @@
         
         const listView = document.getElementById('listView');
         const editorView = document.getElementById('editorView');
+
+        let currentImagePath = ''; // Store the existing image path when editing
 
         function showList() {
             listView.classList.remove('d-none');
@@ -171,6 +184,10 @@
             titleInput.value = '';
             contentInput.value = '';
             createdAtInput.value = ''; // Empty means "now" for preview logic
+            imageInput.value = '';
+            imagePreview.src = '';
+            imagePreviewContainer.classList.add('d-none');
+            currentImagePath = '';
             
             // UI Updates
             formTitle.textContent = 'Create New Announcement';
@@ -189,6 +206,16 @@
             titleInput.value = data.title;
             contentInput.value = data.content;
             createdAtInput.value = data.created_at; // Keep original date
+            imageInput.value = ''; // Reset file input
+
+            if (data.image) {
+                currentImagePath = data.image;
+                imagePreview.src = `${baseUrl}/storage/${data.image}`;
+                imagePreviewContainer.classList.remove('d-none');
+            } else {
+                currentImagePath = '';
+                imagePreviewContainer.classList.add('d-none');
+            }
             
             // UI Updates
             formTitle.textContent = 'Edit Announcement';
@@ -235,14 +262,32 @@
             let dateToUse = createdAtInput.value ? new Date(createdAtInput.value) : new Date();
             params.append('created_at', dateToUse.toISOString());
 
-            // Cache busting
             params.append('t', new Date().getTime());
 
-            // Point to the public announcements page (or a specific preview route)
-            // Assuming the public page can handle these params to show a preview
+            // Image Handling for Preview
+            const file = imageInput.files[0];
+            if (file) {
+                // If a new file is selected, read it as DataURL and store in LocalStorage
+                // This avoids passing huge strings in the URL
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    localStorage.setItem('preview_temp_image', e.target.result);
+                    params.append('use_temp_image', 'true');
+                    loadIframe(params);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                // No new file, check if we have an existing one from the record
+                if (currentImagePath) {
+                    params.append('image', currentImagePath);
+                }
+                loadIframe(params);
+            }
+        }
+
+        function loadIframe(params) {
             frame.classList.add('loading-iframe');
             frame.src = `${baseUrl}/announcements?${params.toString()}`;
-
             frame.onload = () => {
                 frame.classList.remove('loading-iframe');
             };
@@ -255,6 +300,16 @@
         });
         contentInput.addEventListener('input', () => {
             updatePreview();
+        });
+
+        // Image Input Listener for Local Preview
+        imageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                imagePreview.src = URL.createObjectURL(file);
+                imagePreviewContainer.classList.remove('d-none');
+            }
+            // Note: We don't update the iframe preview with the new image here because passing file data via GET params is not feasible.
         });
 
         // Manual Reload
@@ -272,24 +327,28 @@
             btn.disabled = true;
 
             const id = idInput.value;
-            const method = id ? 'PUT' : 'POST';
+            // Use POST for both, but add _method for PUT if updating (standard for Laravel file uploads)
             const url = id ? `/admin/announcements/${id}` : '/admin/announcements';
 
             const formData = new FormData();
             formData.append('title', titleInput.value);
             formData.append('content', contentInput.value);
-            // Note: We usually don't send created_at back to be saved unless we want to modify it.
-            // The requirement says "whenever you modify it, it doesnt change the date it was created".
-            // So we don't send created_at. The backend handles updated_at.
+            
+            if (imageInput.files[0]) {
+                formData.append('image', imageInput.files[0]);
+            }
+
+            if (id) {
+                formData.append('_method', 'PUT');
+            }
 
             fetch(url, {
-                method: method,
+                method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+                    'Accept': 'application/json'
                 },
-                body: JSON.stringify(Object.fromEntries(formData))
+                body: formData
             })
             .then(async res => {
                 const data = await res.json();
