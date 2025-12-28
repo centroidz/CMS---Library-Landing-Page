@@ -14,8 +14,8 @@ class ProfileController extends Controller
     public function edit()
     {
         $user = Auth::user();
-        // Decode social media JSON
-        $socials = $user->social_media ? json_decode($user->social_media, true) : [];
+        // social_media is already cast to array in the model
+        $socials = $user->social_media ?? [];
 
         return view('admin.profile.edit', compact('user', 'socials'));
     }
@@ -42,7 +42,7 @@ class ProfileController extends Controller
             'age' => $validated['age'],
             'sex' => $validated['sex'],
             'phone_number' => $validated['phone_number'],
-            'social_media' => json_encode($validated['social_media']),
+            'social_media' => $validated['social_media'],
         ]);
 
         return back()->with('success', 'Profile updated successfully.');
@@ -72,7 +72,7 @@ class ProfileController extends Controller
     public function destroy(Request $request)
     {
         $user = Auth::user();
-        
+
         // Verify password before deletion for extra security (Optional but recommended)
         $request->validate([
             'delete_password' => 'required|current_password',
