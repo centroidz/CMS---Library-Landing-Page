@@ -1,6 +1,6 @@
 @if(request()->has('preview'))
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 @endif
 
 @php
@@ -17,7 +17,7 @@
     </div>
 
     <div class="list-group list-group-flush shadow-sm rounded-4 bg-white overflow-hidden">
-        @if(request()->has('preview_mode'))
+        @if(request()->has('preview') && request('title'))
             <div class="list-group-item p-4 border-0 border-bottom bg-light">
                 <div class="d-flex w-100 justify-content-between mb-2">
                     <h5 class="mb-1 fw-bold text-primary">{{ request('title') }} <span class="badge bg-warning text-dark ms-2">Preview</span></h5>

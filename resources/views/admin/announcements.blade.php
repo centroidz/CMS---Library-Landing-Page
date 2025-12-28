@@ -153,7 +153,7 @@
             listView.classList.add('d-flex');
             editorView.classList.add('d-none');
             editorView.classList.remove('d-flex');
-            frame.src = `${baseUrl}/announcements`;
+            frame.src = `${baseUrl}/announcements?preview=true`;
         }
 
         function showEditor() {
