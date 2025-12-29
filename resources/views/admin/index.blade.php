@@ -47,19 +47,21 @@
                                     </td>
                                     <td class="text-end pe-4">
                                         @if($page->slug == 'landing')
-                                            <a href="/admin/landing-page" class="btn btn-sm btn-outline-primary">Edit Form</a>
+                                            <a href="/admin/landing-page" class="btn btn-sm btn-outline-primary">Manage</a>
                                         @elseif($page->is_default)
                                             <a href="/admin/{{ $page->slug }}" class="btn btn-sm btn-outline-primary">Manage</a>
                                         @else
-                                            <a href="/admin/editor/{{ $page->id }}" class="btn btn-sm btn-primary">Open Editor</a>
-                                            <form action="{{ route('pages.destroy', $page->id) }}" method="POST"
-                                                style="display:inline;" class="role-protected-form">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-outline-danger"
-                                                    data-role="{{ auth()->user()->role }}">
-                                                    <i class="bi bi-trash"></i></button>
-                                            </form>
+                                            <div class="btn-group">
+                                                <a href="/admin/editor/{{ $page->id }}" class="btn btn-sm btn-primary">
+                                                    <i class="bi bi-palette me-1"></i> Open Editor
+                                                </a>
+                                                <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
+                                                    data-bs-target="#deleteConfirmModal"
+                                                    data-url="{{ route('pages.destroy', $page->id) }}"
+                                                    data-title="{{ $page->title }}">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
                                         @endif
                                     </td>
                                 </tr>
@@ -107,24 +109,74 @@
                                             <i class="bi bi-gear me-1"></i> Manage
                                         </a>
                                     @else
-                                        <a href="/admin/editor/{{ $page->id }}" class="btn btn-sm btn-primary px-3">
-                                            <i class="bi bi-palette me-1"></i> Open Editor
-                                        </a>
+                                        <div class="btn-group">
+                                            <a href="/admin/editor/{{ $page->id }}" class="btn btn-sm btn-primary editor-link"
+                                                data-id="{{ $page->id }}">
+                                                <i class="bi bi-palette me-1"></i> Open Editor
+                                            </a>
 
-                                        <form action="{{ route('pages.destroy', $page->id) }}" method="POST" style="display:inline;"
-                                            class="role-protected-form">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-outline-danger w-100"
-                                                data-role="{{ auth()->user()->role }}">
-                                                <i class="bi bi-trash me-1"></i> Delete
+                                            <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
+                                                data-bs-target="#deleteConfirmModal"
+                                                data-url="{{ route('pages.destroy', $page->id) }}" data-title="{{ $page->title }}">
+                                                <i class="bi bi-trash"></i>
                                             </button>
-                                        </form>
+                                        </div>
+
                                     @endif
                                 </div>
                             </div>
                         </div>
                     @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="mobileWarningModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title"><i class="bi bi-exclamation-triangle-fill me-2"></i> Desktop Recommended</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>The Page Editor is designed for large screens to maximize usability and precision. Using it on a
+                        mobile device may be difficult.</p>
+                    <p class="mb-0 text-muted small">Would you like to continue anyway or switch to a desktop?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Go Back</button>
+                    <a href="#" id="continueToEditor" class="btn btn-primary">Continue on Mobile</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="deleteModalLabel">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>Confirm Deletion
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <p class="mb-1">Are you sure you want to delete this page?</p>
+                    <h5 id="pageTitleDisplay" class="fw-bold text-dark"></h5>
+                    <p class="text-muted small mt-2">This action is permanent and cannot be undone.</p>
+                </div>
+                <div class="modal-footer bg-light border-0">
+                    <button type="button" class="btn btn-secondary rounded-pill px-4"
+                        data-bs-dismiss="modal">Cancel</button>
+                    <form id="deletePageForm" method="POST" action="">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger rounded-pill px-4">
+                            Delete Permanently
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

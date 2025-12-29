@@ -292,10 +292,10 @@
             }
 
             // Delete Confirmation Logic (Existing)
-            if (form.action.includes('pages/') && form.method.toLowerCase() === 'post' &&
-                form.querySelector('[name="_method"][value="DELETE"]')) {
-                return confirm('Are you sure you want to delete this page?');
-            }
+            // if (form.action.includes('pages/') && form.method.toLowerCase() === 'post' &&
+            //     form.querySelector('[name="_method"][value="DELETE"]')) {
+            //     return confirm('Are you sure you want to delete this page?');
+            // }
 
             return true;
         });
@@ -352,10 +352,60 @@
                 backdrop.style.display = 'none';
             }
         });
+
+
+
+
+
     </script>
 
 
 
+    <script>
+
+        document.querySelectorAll('.editor-link').forEach(link => {
+            link.addEventListener('click', function (e) {
+                // Check if screen width is less than 1024px
+                if (window.innerWidth < 1024) {
+                    e.preventDefault(); // Stop the page from navigating
+
+                    const url = this.getAttribute('href');
+                    const modalElement = document.getElementById('mobileWarningModal');
+                    const continueBtn = document.getElementById('continueToEditor');
+
+                    // Set the URL to the "Continue" button inside the modal
+                    continueBtn.setAttribute('href', url);
+
+                    // Show the Bootstrap Modal
+                    const mobileModal = new bootstrap.Modal(modalElement);
+                    mobileModal.show();
+                }
+            });
+        });
+
+
+        //delete page
+        document.addEventListener('DOMContentLoaded', function () {
+            const deleteModal = document.getElementById('deleteConfirmModal');
+
+            deleteModal.addEventListener('show.bs.modal', function (event) {
+                // Button that triggered the modal
+                const button = event.relatedTarget;
+
+                // Extract info from data-attributes
+                const url = button.getAttribute('data-url');
+                const title = button.getAttribute('data-title');
+
+                // Update the modal's content
+                const form = deleteModal.querySelector('#deletePageForm');
+                const displayTitle = deleteModal.querySelector('#pageTitleDisplay');
+
+                form.setAttribute('action', url);
+                displayTitle.textContent = title;
+            });
+        });
+
+    </script>
 
 </body>
 
