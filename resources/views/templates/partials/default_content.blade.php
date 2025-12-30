@@ -160,9 +160,11 @@
                         <p class="text-muted">No announcement available at the moment.</p>
                     </div>
                 @endforelse
-            @endif
-
+            @endif                           
         </div>
+    </div>
+    <div class="container-fluid bg-light p-5">                  
+        @include('public.testimonials')
     </div>
 </section>
 
