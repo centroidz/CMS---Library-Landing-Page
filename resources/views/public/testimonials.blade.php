@@ -1,12 +1,12 @@
 <section class="py-5" style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);">
     <div class="container">
-        
+
         <div class="text-center mb-5">
             <h2 class="fw-bold display-5 mb-3">Testimonials</h2>
             <p class="text-muted lead">See what others are saying about the Keeper Library</p>
-            
+
             <div id="auth-buttons" class="mt-4">
-                </div>
+            </div>
         </div>
 
         <div id="review-form-container" class="row justify-content-center mb-5" style="display: none;">
@@ -33,49 +33,51 @@
         </div>
 
         <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
-    
-    <div class="carousel-inner" id="testimonials-track">
-        <div class="text-center py-5">
-            <div class="spinner-border text-primary" role="status"></div>
-            <p class="text-muted mt-2">Loading reviews...</p>
+
+            <div class="carousel-inner" id="testimonials-track">
+                <div class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status"></div>
+                    <p class="text-muted mt-2">Loading reviews...</p>
+                </div>
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev" style="left: -50px;">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next" style="right: -50px;">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+
         </div>
-    </div>
-
-    <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev" style="left: -50px;">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next" style="right: -50px;">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-    </button>
-
-</div>
 
     </div>
 </section>
 <style>
     .carousel-control-prev-icon,
     .carousel-control-next-icon {
-        background-color: var(--text-main); 
+        background-color: var(--text-main);
         border-radius: 50%;
         background-size: 60%;
     }
+
     .carousel-control-prev,
     .carousel-control-next {
         width: 5%;
         opacity: 0.8;
     }
+
     .carousel-control-prev:hover,
     .carousel-control-next:hover {
         opacity: 1;
     }
 </style>
 
-    <script>
+<script>
     // CONFIGURATION
     const API_URL = 'https://keeper.ccs-octa.com/api';
-    
+
     // STATE
     let token = localStorage.getItem('api_token');
     let currentUser = null;
@@ -98,18 +100,25 @@
 
     // 2. Check User Session
     async function checkUserSession() {
-        if (!token) { renderAuthUI(); return; }
+        if (!token) {
+            renderAuthUI();
+            return;
+        }
 
         try {
             const res = await fetch(`${API_URL}/auth/me`, {
-                headers: { 'Authorization': `Bearer ${token}` }
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
             });
             if (res.ok) {
                 currentUser = await res.json();
             } else {
                 logout(); // Token expired
             }
-        } catch (e) { console.error(e); }
+        } catch (e) {
+            console.error(e);
+        }
         renderAuthUI();
     }
 
@@ -159,7 +168,7 @@
             const chunkSize = 3;
             for (let i = 0; i < data.length; i += chunkSize) {
                 const chunk = data.slice(i, i + chunkSize);
-                
+
                 // First item must be active
                 const isActive = (i === 0) ? 'active' : '';
 
@@ -169,7 +178,7 @@
 
                 // Create Row for the 3 Cards
                 let rowHtml = '<div class="row g-4">';
-                
+
                 // Map the 3 (or fewer) cards inside this slide
                 rowHtml += chunk.map(t => `
                     <div class="col-md-4">
@@ -221,8 +230,14 @@
         try {
             const res = await fetch(`${API_URL}/testimonials`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                body: JSON.stringify({ content, rating })
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    content,
+                    rating
+                })
             });
 
             if (res.ok) {
@@ -233,8 +248,10 @@
             } else {
                 alert('Error posting review.');
             }
-        } catch (err) { alert('Network error.'); }
-        
+        } catch (err) {
+            alert('Network error.');
+        }
+
         btn.disabled = false;
         btn.innerText = "Post Review";
     });
@@ -247,10 +264,12 @@
 
     // 7. Delete
     async function deleteReview(id) {
-        if(!confirm("Delete this review?")) return;
+        if (!confirm("Delete this review?")) return;
         await fetch(`${API_URL}/testimonials/${id}`, {
             method: 'DELETE',
-            headers: { 'Authorization': `Bearer ${token}` }
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
         });
         fetchTestimonials();
     }

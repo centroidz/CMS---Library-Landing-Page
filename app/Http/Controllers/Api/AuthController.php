@@ -38,7 +38,7 @@ class AuthController extends Controller
             $token = $user->createToken('landing-page-token')->plainTextToken;
 
             // Redirect back to your STATIC frontend with the token
-            $frontendUrl = "https://keeperlibrary.online?token=" . $token;
+            $frontendUrl = "https://keeperlibrary.online/?token=" . $token;
             
             return redirect($frontendUrl);
 
