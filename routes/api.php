@@ -6,10 +6,16 @@ use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\TestimonialController;
+use App\Http\Controllers\Api\PageDataController;
+use App\Http\Controllers\TemplateController;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+// Route::get('/user', function (Request $request) {
+//     return $request->user();
+// })->middleware('auth:sanctum');
+
+// The route the Public Site fetches to get the JSON
+Route::get('/public/page-data', [TemplateController::class, 'getPageData']);
+Route::get('/page/landingPage', [PageDataController::class, 'landingPageData']);
 
 // Landing Page Routes
 Route::get('/landing', [LandingPageController::class, 'show']); // Public landing page

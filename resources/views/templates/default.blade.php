@@ -575,15 +575,157 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        async function initTestimonials() {
-            handleAuthRedirect();
-            await checkUserSession();
-            fetchTestimonials();
+        /**
+         * GLOBAL PAGE DATA STATE
+         * Blade loads first, API may override later
+         */
+        window.PAGE_DATA = {
+            source: 'blade'
+        };
 
+        /**
+         * MAIN DATA APPLIER
+         * This handles BOTH Blade & API data
+         */
+        window.applyPageData = function (data) {
+            if (!data || typeof data !== 'object') return;
+
+            window.PAGE_DATA = { ...window.PAGE_DATA, ...data, source: 'api' };
+
+            /* --- HERO --- */
+            if (data.title) document.querySelector('.hero-title').textContent = data.title;
+            if (data.description) document.querySelector('.hero-description').textContent = data.description;
+            if (data.button) document.querySelector('.hero-btn').textContent = data.button;
+
+            // Update Hero Image
+            if (data.image) {
+                const heroImg = document.querySelector('.hero-bg');
+                if (heroImg) heroImg.src = data.image;
+            }
+
+            /* --- MISSION / VISION / GOALS (Using Data Keys) --- */
+            // This is much safer than using array indexes [0] [1]
+            const missionEl = document.querySelector('[data-key="mission"]');
+            if (missionEl && data.mission) missionEl.textContent = data.mission;
+
+            const visionEl = document.querySelector('[data-key="vision"]');
+            if (visionEl && data.vision) visionEl.textContent = data.vision;
+
+            const goalsEl = document.querySelector('[data-key="goals"]');
+            if (goalsEl && data.goals) goalsEl.textContent = data.goals;
+
+            /* --- ARRAYS --- */
+            if (Array.isArray(data.staff)) renderStaff(data.staff);
+            if (Array.isArray(data.news)) renderAnnouncements(data.news);
+            if (Array.isArray(data.related_links)) renderLinks(data.related_links);
+        };
+
+        /* =====================================================
+           POSTMESSAGE LISTENER (FOR IFRAME / PUBLIC SITE)
+        ===================================================== */
+        window.addEventListener('message', (event) => {
+            const allowedOrigins = [
+                'http://127.0.0.1:5500'
+            ];
+
+            if (!allowedOrigins.includes(event.origin)) return;
+            if (!event.data || event.data.type !== 'PAGE_DATA') return;
+
+            window.applyPageData(event.data.payload);
+        });
+
+        /* =====================================================
+            RENDER FUNCTIONS (MATCHING OLD DESIGN)
+        ===================================================== */
+
+        function renderStaff(staff) {
+            const container = document.getElementById('staff-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            staff.forEach(user => {
+                let socialHtml = '';
+                const s = user.social_media; // It's an object in your JSON
+
+                if (s) {
+                    if (s.facebook) socialHtml += `<a href="${s.facebook}" class="social-icon-link"><i class="fab fa-facebook-f"></i></a>`;
+                    if (s.twitter) socialHtml += `<a href="${s.twitter}" class="social-icon-link"><i class="fab fa-x-twitter"></i></a>`;
+                    if (s.linkedin) socialHtml += `<a href="${s.linkedin}" class="social-icon-link"><i class="fab fa-linkedin-in"></i></a>`;
+                    if (s.instagram) socialHtml += `<a href="${s.instagram}" class="social-icon-link"><i class="fab fa-instagram"></i></a>`;
+                }
+
+                container.innerHTML += `
+            <div class="col-lg-4 col-md-6">
+                <div class="staff-card">
+                    <div class="staff-image-container">
+                        <img src="${user.profile_image || '/images/defaults/avatar.png'}" class="staff-image" alt="${user.name}">
+                    </div>
+                    <div class="staff-info">
+                        <div class="staff-role">${user.role || 'Staff'}</div>
+                        <h3 class="staff-name">${user.name}</h3>
+                        <div class="staff-social-links">
+                            ${socialHtml || '<span class="text-muted small">Professional Profile</span>'}
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+            });
         }
 
-        function loadPage(slug) {
+        function renderAnnouncements(news) {
+            const container = document.getElementById('announcement-list');
+            if (!container) return;
 
+            container.innerHTML = '';
+
+            news.forEach(item => {
+                const date = item.created_at ? new Date(item.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+                const image = item.image || '/images/defaults/image-default.png';
+
+                container.innerHTML += `
+            <div class="announcement-card">
+                <img src="${image}" class="ann-img" alt="${item.title}">
+                <div class="ann-overlay">
+                    <span class="ann-date">${date}</span>
+                    <h3 class="ann-title">${item.title}</h3>
+                    <p class="ann-content">${item.content}</p>
+                </div>
+            </div>
+        `;
+            });
+        }
+
+        function renderLinks(links) {
+            const container = document.getElementById('related-links');
+            if (!container) return;
+
+            container.innerHTML = '';
+
+            links.forEach(link => {
+                // Use either link.url/link.label or just the string depending on your API format
+                const url = typeof link === 'string' ? (link.includes('://') ? link : 'https://' + link) : link.url;
+                const label = typeof link === 'string' ? link.split('.')[0] : link.label;
+
+                container.innerHTML += `
+            <div class="col-lg-4 col-md-6">
+                <a href="${url}" target="_blank" class="link-preview-card">
+                    <div class="link-thumbnail"><i class="bi bi-arrow-up-right"></i></div>
+                    <div>
+                        <span class="link-title" style="text-transform: capitalize;">${label}</span>
+                        <p class="small text-muted mb-2">Deep dive into our ecosystem and master the workflow.</p>
+                        <span class="link-url">${url}</span>
+                    </div>
+                </a>
+            </div>
+        `;
+            });
+        }
+
+        /* =====================================================
+           PAGE NAVIGATION (SLUG BASED)
+        ===================================================== */
+
+        function loadPage(slug) {
             const contentArea = document.getElementById('page-content-area');
             const nav = document.getElementById('navRes');
 
@@ -593,11 +735,9 @@
                     contentArea.innerHTML = html;
                     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-                    if (slug == 'landing') {
+                    if (slug === 'landing') {
                         initTestimonials();
                     }
-
-
 
                     const bsCollapse = bootstrap.Collapse.getInstance(nav);
                     if (bsCollapse) bsCollapse.hide();
@@ -605,7 +745,10 @@
                 .catch(err => console.error("Error loading page:", err));
         }
 
-        // Smooth scrolling for anchor links
+        /* =====================================================
+           SMOOTH SCROLL
+        ===================================================== */
+
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -623,16 +766,17 @@
             });
         });
 
-        // Add active class to navbar links on scroll
+        /* =====================================================
+           ACTIVE NAV LINK ON SCROLL
+        ===================================================== */
+
         window.addEventListener('scroll', function () {
             const sections = document.querySelectorAll('section[id]');
             const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
 
             let current = '';
             sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (scrollY >= (sectionTop - 100)) {
+                if (scrollY >= section.offsetTop - 100) {
                     current = section.getAttribute('id');
                 }
             });
@@ -645,6 +789,7 @@
             });
         });
     </script>
+
 </body>
 
 </html>
