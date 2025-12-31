@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Public Portal | Library System</title>
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden; /* Prevents double scrollbars */
+        font-family: sans-serif;
+      }
+
+      /* Full-screen Iframe */
+      #contentFrame {
+        width: 100%;
+        height: 100vh;
+        border: none;
+        display: none; /* Hidden until data is ready */
+      }
+
+      /* Loading Spinner */
+      #loader {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        flex-direction: column;
+      }
+
+      .spinner {
+        width: 50px;
+        height: 50px;
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid #3498db;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="loader">
+      <div class="spinner"></div>
+      <p>Syncing with Library Admin...</p>
+    </div>
+
+    <iframe id="contentFrame" title="Admin Content"></iframe>
+
+    <script>
+      // --- CONFIGURATION ---
+      // Change this line in your Public Website script
+      const ADMIN_BASE_URL = "http://127.0.0.1:8000"; //ADMIN BASE URL
+      const API_ENDPOINT = `${ADMIN_BASE_URL}/api/page/landingPage`;
+
+      // Map layout keys from API to Admin Blade Routes
+      const TEMPLATE_ROUTES = {
+        default: `${ADMIN_BASE_URL}/templates/default`, // If JSON says 'default', load 'default' blade
+        "hero-left": `${ADMIN_BASE_URL}/templates/hero-left`,
+      };
+
+      async function initializeWebsite() {
+        const iframe = document.getElementById("contentFrame");
+        const loader = document.getElementById("loader");
+
+        try {
+          // 1. Fetch the data from the Admin API
+          const response = await fetch(API_ENDPOINT);
+          if (!response.ok) throw new Error("API Fetch Failed");
+
+          const pageData = await response.json();
+
+          // 2. Decide which template to load based on the JSON
+          const layoutKey = pageData.layout || "nolanding";
+          const targetUrl =
+            TEMPLATE_ROUTES[layoutKey] || TEMPLATE_ROUTES["landing"];
+
+          // 3. Set the Iframe source
+          iframe.src = targetUrl;
+
+          // 4. THE HANDSHAKE
+          // We must wait for the iframe to load before sending the message
+          iframe.onload = () => {
+            console.log("Iframe loaded, sending PAGE_DATA...");
+
+            iframe.contentWindow.postMessage(
+              {
+                type: "PAGE_DATA",
+                payload: pageData,
+              },
+              ADMIN_BASE_URL
+            );
+
+            // Show iframe, hide loader
+            iframe.style.display = "block";
+            loader.style.display = "none";
+          };
+        } catch (error) {
+          console.error("Critical Error:", error);
+          document.body.innerHTML = `<div style="padding: 50px; text-align: center;">
+                    <h1>Offline</h1>
+                    <p>Unable to connect to the Admin API. Please ensure Laravel is running.</p>
+                </div>`;
+        }
+      }
+
+      // Run on startup
+      initializeWebsite();
+    </script>
+  </body>
+</html>

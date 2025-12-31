@@ -8,6 +8,12 @@ use App\Http\Controllers\AccountSetupController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\EnsureProfileSetup;
 use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\TemplateController;
+
+// The route the Public Site will put into the <iframe src="...">
+Route::get('/templates/{layout}', [TemplateController::class, 'renderTemplate'])
+    ->middleware('allow.iframe')
+    ->name('templates.render');
 
 // Public Route
 Route::get('/', function () {
@@ -54,7 +60,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         // Page Request Submission (for Editors)
         Route::post('/page-request', [DashboardController::class, 'storePageRequest'])->name('page_requests.store');
         Route::delete('/page-request/{id}', [DashboardController::class, 'destroyPageRequest'])
-        ->name('page_requests.destroy');
+            ->name('page_requests.destroy');
 
         // ADMIN ONLY
         Route::middleware(['role:admin'])->group(function () {

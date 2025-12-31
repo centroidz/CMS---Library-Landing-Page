@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Public Landing Page</title>
+  </head>
+
+  <body>
+    <iframe
+      src="http://127.0.0.1:8000/api/landing"
+      width="100%"
+      height="1000"
+      style="border: none"
+    >
+    </iframe>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // // 1. Load the initial page (This is your existing code)
+      // fetch("http://127.0.0.1:8000/api/landing")
+      //   .then((res) => res.text())
+      //   .then((html) => {
+      //     document.getElementById("app").innerHTML = html;
+      //   })
+      //   .catch((err) => {
+      //     console.error(err);
+      //     document.getElementById("app").innerHTML = "Error loading page";
+      //   });
+
+      // // 2. THE ADDITION: This function must live here to work on the public site
+      // function loadPage(slug) {
+      //   const contentArea = document.getElementById("page-content-area");
+
+      //   // Use the absolute URL to your Laravel API
+      //   fetch(`http://127.0.0.1:8000/api/page/${slug}`)
+      //     .then((res) => res.text())
+      //     .then((html) => {
+      //       contentArea.innerHTML = html;
+      //       window.scrollTo(0, 0);
+      //     })
+      //     .catch((err) => console.error("Error switching page:", err));
+      // }
+    </script>
+  </body>
+</html>

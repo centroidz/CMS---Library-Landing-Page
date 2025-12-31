@@ -6,11 +6,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     protected $primaryKey = 'id';
 
@@ -29,6 +30,8 @@ class User extends Authenticatable
         'sex',
         'phone_number',
         'social_media',
+        'google_id',
+        'avatar',
     ];
 
     /**
@@ -53,5 +56,12 @@ class User extends Authenticatable
             'password' => 'hashed',
             'social_media' => 'array',
         ];
+    }
+
+    // ... inside User class ...
+
+    public function testimonials()
+    {
+        return $this->hasMany(Testimonial::class);
     }
 }
