@@ -45,9 +45,12 @@ class PageController extends Controller
         if ($slug === 'staff-page') {
             $showcasedStaff = \App\Models\User::where('is_public', true)->get();
 
-            return view('public.staff-page', [
-                'users' => $showcasedStaff
-            ])->render();
+            // Use response()->make() to attach headers to the HTML string
+            return response()->make(
+                view('public.staff-page', ['users' => $showcasedStaff])->render(),
+                200,
+                ['Content-Type' => 'text/html']
+            );
         }
 
         if (view()->exists("public.{$slug}")) {
