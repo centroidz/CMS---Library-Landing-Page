@@ -71,11 +71,14 @@ class DashboardController extends Controller
     // Staff view
     public function staffIndex()
     {
-
-        $users = User::where('id', '!=', auth()->id())->get();
+        // Fetch all users EXCEPT:
+        // 1. The currently logged-in admin (auth()->id())
+        // 2. Anyone with the 'user' role (Testimonial accounts)
+        $users = User::where('id', '!=', auth()->id())
+                     ->where('role', '!=', 'user') 
+                     ->get();
 
         return view('admin.staff', compact('users'));
-
     }
 
     // Announcements view
@@ -86,10 +89,9 @@ class DashboardController extends Controller
 
     public function staffPage()
     {
-        // Fetch all users to list them in the Control Panel
-        $users = User::all();
+        // Only show actual staff roles
+        $users = User::whereIn('role', ['admin', 'moderator', 'editor'])->get();
 
-        // We pass a 'page' object or null to satisfy your layout variables
         return view('admin.staff-page', compact('users'));
     }
 

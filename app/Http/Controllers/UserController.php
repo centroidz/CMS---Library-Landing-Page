@@ -12,8 +12,11 @@ class UserController extends Controller
     
     public function index()
     {
-        // Get all users
-        $users = User::all();
+        // Get users with specific staff roles
+        $users = User::whereIn('role', ['admin', 'moderator', 'editor'])
+                    ->orderBy('name')
+                    ->get();
+        
         return view('admin.staff', compact('users'));
     }
 

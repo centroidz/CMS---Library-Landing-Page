@@ -29,7 +29,7 @@ class AuthController extends Controller
                     'name' => $googleUser->getName(),
                     'google_id' => $googleUser->getId(),
                     'avatar' => $googleUser->getAvatar(),
-                    'role' => 'editor', // OR create a new role 'user' in your ENUM
+                    'role' => 'user', // OR create a new role 'user' in your ENUM
                     'password' => bcrypt(Str::random(16)), // Random password
                 ]
             );
