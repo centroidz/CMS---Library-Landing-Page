@@ -48,12 +48,21 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Smooth scrolling */
+        #about,
+        #team,
+        #announcement,
+        #resources,
+        #goals,
+        .card-feature,
+        .staff-card,
+        .announcement-card {
+            color: var(--br-950) !important;
+        }
+
         html {
             scroll-behavior: smooth;
         }
 
-        /* Navbar */
         .navbar {
             backdrop-filter: blur(16px);
             background: rgba(255, 255, 255, 0.4);
@@ -100,7 +109,7 @@
 
         .nav-link {
             font-weight: 600;
-            color: var(--br-950);
+            color: var(--br-950) !important;
             padding: 0.5rem 1rem;
             margin: 0 0.25rem;
             border-radius: 10px;
@@ -109,7 +118,7 @@
         }
 
         .nav-link:hover {
-            color: var(--br-600);
+            color: var(--br-600) !important;
             background: rgba(255, 255, 255, 0.6);
         }
 
@@ -129,7 +138,6 @@
             width: calc(100% - 2rem);
         }
 
-        /* Hero Section */
         .hero-section {
             padding: 180px 0 120px;
             background: radial-gradient(circle at top right, rgba(238, 245, 255, 0.3) 0%, var(--bg-body) 50%);
@@ -168,8 +176,8 @@
         .section-tag {
             display: inline-block;
             padding: 10px 28px;
-            background: var(--primary-gradient);
-            color: white;
+            background: rgba(255, 255, 255, 0.2) !important;
+            color: white !important;
             border-radius: 100px;
             font-size: 0.85rem;
             font-weight: 700;
@@ -183,7 +191,7 @@
 
         .display-3 {
             font-weight: 800;
-            color: var(--br-950);
+            color: white !important;
             line-height: 1.2;
             margin-bottom: 1.5rem;
             position: relative;
@@ -198,12 +206,12 @@
             left: 0;
             width: 80px;
             height: 4px;
-            background: var(--primary-gradient);
+            background: white !important;
             border-radius: 2px;
         }
 
         .lead {
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(255, 255, 255, 0.9) !important;
             font-size: 1.25rem;
             font-weight: 400;
             margin-bottom: 2.5rem;
@@ -213,7 +221,7 @@
 
         .btn-modern {
             background: var(--primary-gradient);
-            color: white;
+            color: white !important;
             border: none;
             padding: 14px 36px;
             border-radius: 12px;
@@ -241,7 +249,7 @@
         .btn-modern:hover {
             transform: translateY(-3px);
             box-shadow: 0 12px 30px rgba(89, 157, 255, 0.6);
-            color: white;
+            color: white !important;
         }
 
         .btn-modern:hover::before {
@@ -250,7 +258,7 @@
 
         .btn-modern-outline {
             background: transparent;
-            color: white;
+            color: white !important;
             border: 2px solid rgba(255, 255, 255, 0.3);
             padding: 12px 34px;
             border-radius: 12px;
@@ -261,12 +269,11 @@
         .btn-modern-outline:hover {
             background: rgba(255, 255, 255, 0.1);
             border-color: white;
-            color: white;
+            color: white !important;
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
         }
 
-        /* Image Container */
         .hero-img-container {
             width: 100%;
             height: 480px;
@@ -308,13 +315,12 @@
             pointer-events: none;
         }
 
-        /* Mission & Vision Cards */
         .card-feature {
             border: none;
             border-radius: 24px;
             padding: 48px 40px;
-            background: var(--primary-gradient);
-            color: #ffffff;
+            background: white !important;
+            color: var(--br-950) !important;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             height: 100%;
             box-shadow: var(--shadow);
@@ -323,14 +329,14 @@
         }
 
         .card-feature h3 {
-            color: #ffffff;
+            color: var(--br-950) !important;
             font-weight: 700;
             margin-bottom: 1.5rem;
             font-size: 1.5rem;
         }
 
         .card-feature p {
-            color: rgba(255, 255, 255, 0.9);
+            color: var(--text-muted) !important;
             font-size: 1.1rem;
             line-height: 1.7;
         }
@@ -342,13 +348,12 @@
         }
 
         .card-feature:hover h3 {
-            color: var(--br-500);
+            color: var(--br-500) !important;
         }
 
-        /* Strategic Goals section */
         .goals-section {
             background: linear-gradient(135deg, var(--br-600) 0%, var(--br-400) 100%);
-            color: white;
+            color: white !important;
             padding: 100px 0;
             position: relative;
             overflow: hidden;
@@ -383,7 +388,7 @@
         }
 
         .goals-section h2 {
-            color: white;
+            color: white !important;
             font-weight: 700;
             margin-bottom: 2rem;
             position: relative;
@@ -403,14 +408,13 @@
         }
 
         .goals-section p {
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(255, 255, 255, 0.9) !important;
             font-size: 1.2rem;
             line-height: 1.8;
             position: relative;
             z-index: 1;
         }
 
-        /* Footer */
         .footer {
             background: linear-gradient(135deg, var(--br-950) 0%, #0d1b3e 100%);
             color: rgba(255, 255, 255, 0.85);
@@ -439,13 +443,11 @@
             color: var(--br-400);
         }
 
-        /* Container */
         .container {
             position: relative;
             z-index: 1;
         }
 
-        /* Animation for page content */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -462,7 +464,6 @@
             animation: fadeInUp 0.6s ease forwards;
         }
 
-        /* Text color */
         .text-dark-on-blue {
             color: var(--br-950) !important;
         }
@@ -471,7 +472,6 @@
             color: rgba(255, 255, 255, 0.9) !important;
         }
 
-        /* Glass effect for content cards */
         .glass-card {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -482,20 +482,15 @@
         }
 
 
-        /*====================================================
-           ADDITIONAL STYLES FOR RENDERED CONTENT
-        =====================================================*/
-        /* Staff Section - Theme Matched */
         .staff-section {
             padding: 80px 0;
             background-color: var(--bg-body);
-            /* Matches your body background */
         }
 
         .staff-card {
             border: 1px solid var(--border-soft);
             border-radius: 20px;
-            background: var(--bg-card);
+            background: white !important;
             transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
             box-shadow: var(--shadow);
             height: 100%;
@@ -530,6 +525,7 @@
             padding: 1.75rem 1.5rem;
             text-align: center;
             flex-grow: 1;
+            color: var(--br-950) !important;
         }
 
         .staff-role {
@@ -550,8 +546,7 @@
             font-weight: 700;
             font-size: 1.25rem;
             margin-bottom: 0.5rem;
-            color: var(--text-main);
-            /* Using your br-950 variable */
+            color: var(--br-950) !important;
         }
 
         .staff-social-links {
@@ -577,7 +572,6 @@
             border: 1px solid transparent;
         }
 
-        /* Brand Colors on Hover */
         .social-icon-link:hover {
             transform: translateY(-3px);
             color: white !important;
@@ -600,7 +594,6 @@
             background-color: #0a66c2;
         }
 
-        /* View All Button - Theme Matched */
         .view-all-container {
             margin-top: 4rem;
         }
@@ -624,7 +617,6 @@
             color: white !important;
         }
 
-        /* Announcement Section Styles */
         #announcement {
             padding: 60px 0;
             background-color: var(--br-50);
@@ -636,7 +628,6 @@
             gap: 20px;
             overflow-x: auto;
             padding-bottom: 20px;
-            /* Custom Scrollbar for Chrome/Safari */
             scrollbar-width: thin;
             scrollbar-color: var(--br-200) transparent;
         }
@@ -652,14 +643,12 @@
 
         .announcement-card {
             flex: 0 0 400px;
-            /* Fixed width for the film frame */
             height: 30vh;
-            /* Your requested height */
             min-height: 250px;
             position: relative;
             border-radius: 16px;
             overflow: hidden;
-            background-color: var(--br-950);
+            background-color: white !important;
             box-shadow: var(--shadow);
             transition: transform 0.3s ease;
         }
@@ -673,7 +662,6 @@
             height: 100%;
             object-fit: cover;
             opacity: 0.7;
-            /* Darkens image for text readability */
             transition: opacity 0.3s ease;
         }
 
@@ -688,8 +676,7 @@
             right: 0;
             padding: 20px;
             background: linear-gradient(transparent, rgba(20, 33, 87, 0.9));
-            /* br-950 gradient */
-            color: white;
+            color: white !important;
         }
 
         .ann-title {
@@ -717,6 +704,66 @@
             color: var(--br-400);
             font-weight: 600;
             text-transform: uppercase;
+        }
+
+        #goals .display-6 {
+            color: var(--br-950) !important;
+        }
+
+        #goals .text-muted {
+            color: var(--text-muted) !important;
+        }
+
+        #team h2,
+        #team p {
+            color: var(--br-950) !important;
+        }
+
+        #team .text-muted {
+            color: var(--text-muted) !important;
+        }
+
+        #announcement h2 {
+            color: var(--br-950) !important;
+        }
+
+        #resources h2 {
+            color: var(--br-950) !important;
+        }
+
+        .btn-primary {
+            color: white !important;
+        }
+
+        .btn-outline-primary {
+            color: var(--br-600) !important;
+            border-color: var(--br-600) !important;
+        }
+
+        .btn-outline-primary:hover {
+            color: white !important;
+            background-color: var(--br-600) !important;
+        }
+
+        #about a,
+        #team a,
+        #announcement a,
+        #resources a,
+        #goals a {
+            color: var(--br-600) !important;
+        }
+
+        footer,
+        footer * {
+            color: white !important;
+        }
+
+        footer .text-muted {
+            color: rgba(255, 255, 255, 0.7) !important;
+        }
+
+        footer .text-primary {
+            color: var(--br-400) !important;
         }
     </style>
 </head>
@@ -758,36 +805,24 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        /**
-         * GLOBAL PAGE DATA STATE
-         * Blade loads first, API may override later
-         */
         window.PAGE_DATA = {
             source: 'blade'
         };
 
-        /**
-         * MAIN DATA APPLIER
-         * This handles BOTH Blade & API data
-         */
         window.applyPageData = function (data) {
             if (!data || typeof data !== 'object') return;
 
             window.PAGE_DATA = { ...window.PAGE_DATA, ...data, source: 'api' };
 
-            /* --- HERO --- */
             if (data.title) document.querySelector('.hero-title').textContent = data.title;
             if (data.description) document.querySelector('.hero-description').textContent = data.description;
             if (data.button) document.querySelector('.hero-btn').textContent = data.button;
 
-            // Update Hero Image
             if (data.image) {
                 const heroImg = document.querySelector('.hero-bg');
                 if (heroImg) heroImg.src = data.image;
             }
 
-            /* --- MISSION / VISION / GOALS (Using Data Keys) --- */
-            // This is much safer than using array indexes [0] [1]
             const missionEl = document.querySelector('[data-key="mission"]');
             if (missionEl && data.mission) missionEl.textContent = data.mission;
 
@@ -797,18 +832,14 @@
             const goalsEl = document.querySelector('[data-key="goals"]');
             if (goalsEl && data.goals) goalsEl.textContent = data.goals;
 
-            /* --- ARRAYS --- */
             if (Array.isArray(data.staff)) renderStaff(data.staff);
             if (Array.isArray(data.news)) renderAnnouncements(data.news);
             if (Array.isArray(data.related_links)) renderLinks(data.related_links);
         };
 
-        /* =====================================================
-           POSTMESSAGE LISTENER (FOR IFRAME / PUBLIC SITE)
-        ===================================================== */
         window.addEventListener('message', (event) => {
             const allowedOrigins = [
-                'http://127.0.0.1:5500' //link of the public website
+                'http://127.0.0.1:5500'
             ];
 
             if (!allowedOrigins.includes(event.origin)) return;
@@ -817,10 +848,6 @@
             window.applyPageData(event.data.payload);
         });
 
-        /* =====================================================
-            RENDER FUNCTIONS (MATCHING OLD DESIGN)
-        ===================================================== */
-
         function renderStaff(staff) {
             const container = document.getElementById('staff-container');
             if (!container) return;
@@ -828,7 +855,7 @@
 
             staff.forEach(user => {
                 let socialHtml = '';
-                const s = user.social_media; // It's an object in your JSON
+                const s = user.social_media;
 
                 if (s) {
                     if (s.facebook) socialHtml += `<a href="${s.facebook}" class="social-icon-link"><i class="fab fa-facebook-f"></i></a>`;
@@ -885,7 +912,6 @@
             container.innerHTML = '';
 
             links.forEach(link => {
-                // Use either link.url/link.label or just the string depending on your API format
                 const url = typeof link === 'string' ? (link.includes('://') ? link : 'https://' + link) : link.url;
                 const label = typeof link === 'string' ? link.split('.')[0] : link.label;
 
@@ -904,9 +930,6 @@
             });
         }
 
-        /* =====================================================
-           PAGE NAVIGATION (SLUG BASED)
-        ===================================================== */
         async function initTestimonials() {
             handleAuthRedirect();
             await checkUserSession();
@@ -934,10 +957,6 @@
                 .catch(err => console.error("Error loading page:", err));
         }
 
-        /* =====================================================
-           SMOOTH SCROLL
-        ===================================================== */
-
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -954,10 +973,6 @@
                 }
             });
         });
-
-        /* =====================================================
-           ACTIVE NAV LINK ON SCROLL
-        ===================================================== */
 
         window.addEventListener('scroll', function () {
             const sections = document.querySelectorAll('section[id]');
