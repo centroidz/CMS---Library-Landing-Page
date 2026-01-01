@@ -575,6 +575,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
+
         /**
          * GLOBAL PAGE DATA STATE
          * Blade loads first, API may override later
@@ -733,22 +734,48 @@
 
         function loadPage(slug) {
             const contentArea = document.getElementById('page-content-area');
-            const nav = document.getElementById('navRes');
+            const ADMIN_URL = "http://127.0.0.1:8000";
 
-            fetch(`/api/page/${slug}`)
-                .then(res => res.text())
-                .then(html => {
-                    contentArea.innerHTML = html;
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-
-                    if (slug === 'landing') {
-                        initTestimonials();
-                    }
-
-                    const bsCollapse = bootstrap.Collapse.getInstance(nav);
-                    if (bsCollapse) bsCollapse.hide();
+            fetch(`${ADMIN_URL}/api/page/${slug}`)
+                .then(res => {
+                    if (!res.ok) throw new Error(`Server responded with ${res.status}`);
+                    return res.text();
                 })
-                .catch(err => console.error("Error loading page:", err));
+                .then(html => {
+                    // 1. Inject the HTML
+                    contentArea.innerHTML = html;
+
+                    // 2. Trigger scripts
+                    const scripts = contentArea.querySelectorAll("script");
+                    scripts.forEach((oldScript) => {
+                        const newScript = document.createElement("script");
+                        Array.from(oldScript.attributes).forEach(attr =>
+                            newScript.setAttribute(attr.name, attr.value)
+                        );
+                        newScript.textContent = oldScript.textContent;
+                        document.body.appendChild(newScript);
+                        oldScript.remove();
+                    });
+
+                    // 3. HYDRATION FIX: Manually kickstart the logic
+                    // We wait 100ms to ensure the scripts we just injected are parsed by the browser
+                    setTimeout(() => {
+                        if (slug === 'landing') {
+                            if (typeof window.initTestimonials === 'function') {
+                                console.log("Kicking off testimonials...");
+                                window.initTestimonials();
+                            } else {
+                                console.warn("initTestimonials function not found in injected HTML.");
+                            }
+                        }
+                    }, 100);
+
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                })
+                .catch(err => {
+                    console.error("Hydration Error:", err);
+                    contentArea.innerHTML = `<div class="alert alert-danger">Failed to load ${slug}.</div>`;
+                });
         }
 
         /* =====================================================

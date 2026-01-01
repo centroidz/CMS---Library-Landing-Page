@@ -94,9 +94,20 @@
     //     alert('sa');
     // });
 
-    document.addEventListener('DOMContentLoaded', () => {
+    /* --- Replace your existing DOMContentLoaded block with this --- */
+    window.initTestimonials = async function () {
+        console.log("Initializing Testimonials...");
+        handleAuthRedirect();
+        await checkUserSession();
+        await fetchTestimonials();
+    };
+
+    // This handles the "Admin Preview" (where the page loads normally)
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
         initTestimonials();
-    });
+    } else {
+        document.addEventListener('DOMContentLoaded', initTestimonials);
+    }
 
     // 1. Handle Login Redirect
     function handleAuthRedirect() {
