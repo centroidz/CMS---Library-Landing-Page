@@ -11,14 +11,20 @@
 
         <div id="review-form-container" class="row justify-content-center mb-5" style="display: none;">
             <div class="col-md-8">
-                <div class="bg-white rounded-4 shadow-sm p-4">
-                    <h5 class="fw-bold mb-3">Write a Review</h5>
+                <div class="bg-white rounded-4 shadow-sm p-4 border border-light">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="fw-bold mb-0" id="form-title">Write a Review</h5>
+                        <button type="button" class="btn-close" onclick="closeForm()" aria-label="Close"></button>
+                    </div>
+                    
                     <form id="testimonial-form">
+                        <input type="hidden" id="edit-id" value="">
+
                         <div class="mb-3">
                             <textarea id="review-content" class="form-control bg-light border-0" rows="3"
                                 placeholder="Share your experience..." required></textarea>
                         </div>
-                        <div class="d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center justify-content-between gap-2">
                             <select id="review-rating" class="form-select w-auto border-0 bg-light"
                                 style="font-weight: bold;">
                                 <option value="5">★★★★★ 5 Stars</option>
@@ -27,23 +33,27 @@
                                 <option value="2">★★☆☆☆ 2 Stars</option>
                                 <option value="1">★☆☆☆☆ 1 Star</option>
                             </select>
-                            <button type="submit" class="btn text-white px-4 rounded-pill"
-                                style="background-color: var(--text-main);">Post Review</button>
+                            
+                            <div class="d-flex gap-2">
+                                <button type="button" id="btn-cancel-edit" class="btn btn-secondary rounded-pill px-3" 
+                                    style="display: none;" onclick="resetForm()">Cancel</button>
+                                <button type="submit" id="btn-submit" class="btn text-white px-4 rounded-pill"
+                                    style="background-color: var(--text-main, #0d6efd);">Post Review</button>
+                            </div>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
 
-        <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
-
+        <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="8000">
             <div class="carousel-inner" id="testimonials-track">
                 <div class="text-center py-5">
                     <div class="spinner-border text-primary" role="status"></div>
                     <p class="text-muted mt-2">Loading reviews...</p>
                 </div>
             </div>
-
+            
             <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel"
                 data-bs-slide="prev" style="left: -50px;">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -54,15 +64,25 @@
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
             </button>
-
         </div>
 
     </div>
 </section>
+
 <style>
+    /* Styling for the Edit/Delete buttons on the card */
+    .card-actions {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        z-index: 10;
+        display: flex;
+        gap: 5px;
+    }
+    
     .carousel-control-prev-icon,
     .carousel-control-next-icon {
-        background-color: var(--text-main);
+        background-color: var(--text-main, #0d6efd);
         border-radius: 50%;
         background-size: 60%;
     }
@@ -81,24 +101,27 @@
 
 <script>
     // CONFIGURATION
-    // const API_URL = 'https://keeper.ccs-octa.com/api';
-    const API_URL = 'http://127.0.0.1:8000/api';
+    const API_URL = 'https://keeper.ccs-octa.com/api'; // Or your production URL
+    
     // STATE
     let token = localStorage.getItem('api_token');
     let currentUser = null;
 
-    // document.addEventListener('DOMContentLoaded', async () => {
-    //     handleAuthRedirect();
-    //     await checkUserSession();
-    //     fetchTestimonials();
-    //     alert('sa');
-    // });
+    // Initialization Logic (Compatible with landing page fetch)
+    window.initTestimonials = async function () {
+        console.log("Initializing Testimonials System...");
+        handleAuthRedirect();
+        await checkUserSession();
+        await fetchTestimonials();
+    };
 
-    document.addEventListener('DOMContentLoaded', () => {
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
         initTestimonials();
-    });
+    } else {
+        document.addEventListener('DOMContentLoaded', initTestimonials);
+    }
 
-    // 1. Handle Login Redirect
+    // 1. Auth & Token Handling
     function handleAuthRedirect() {
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has('token')) {
@@ -108,47 +131,35 @@
         }
     }
 
-    // 2. Check User Session
     async function checkUserSession() {
-        if (!token) {
-            renderAuthUI();
-            return;
-        }
-
+        if (!token) { renderAuthUI(); return; }
         try {
             const res = await fetch(`${API_URL}/auth/me`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
+                headers: { 'Authorization': `Bearer ${token}` }
             });
             if (res.ok) {
                 currentUser = await res.json();
             } else {
-                logout(); // Token expired
+                logout(); 
             }
-        } catch (e) {
-            console.error(e);
-        }
+        } catch (e) { console.error(e); }
         renderAuthUI();
     }
 
-    // 3. Render Buttons based on Login State
     function renderAuthUI() {
         const container = document.getElementById('auth-buttons');
         const formContainer = document.getElementById('review-form-container');
 
         if (currentUser) {
-            // Logged In
             container.innerHTML = `
                 <div class="d-flex align-items-center justify-content-center gap-3">
                     <img src="${currentUser.avatar || 'https://via.placeholder.com/40'}" class="rounded-circle" width="40" height="40">
                     <span class="fw-bold">Hi, ${currentUser.name.split(' ')[0]}!</span>
-                    <button onclick="document.getElementById('review-form-container').style.display='flex'" class="btn btn-outline-primary rounded-pill btn-sm">Write Review</button>
+                    <button onclick="openCreateForm()" class="btn btn-outline-primary rounded-pill btn-sm">Write Review</button>
                     <button onclick="logout()" class="btn btn-link text-muted btn-sm text-decoration-none">Logout</button>
                 </div>
             `;
         } else {
-            // Guest
             formContainer.style.display = 'none';
             container.innerHTML = `
                 <a href="${API_URL}/auth/google?redirect_to=${window.location.href}" class="btn px-4 py-2 rounded-pill shadow-sm text-white" style="background-color: #DB4437; font-weight: 500;">
@@ -158,8 +169,7 @@
         }
     }
 
-    // 4. Fetch and Render Testimonials
-    // 4. Fetch and Render Testimonials (Carousel Version)
+    // 2. Fetching Data
     async function fetchTestimonials() {
         try {
             const res = await fetch(`${API_URL}/testimonials`);
@@ -171,52 +181,57 @@
                 return;
             }
 
-            // Clear loading spinner
             track.innerHTML = '';
-
-            // LOGIC: Chunk data into groups of 3
             const chunkSize = 3;
+            
             for (let i = 0; i < data.length; i += chunkSize) {
                 const chunk = data.slice(i, i + chunkSize);
-
-                // First item must be active
                 const isActive = (i === 0) ? 'active' : '';
 
-                // Create Slide Item
                 const slideItem = document.createElement('div');
                 slideItem.className = `carousel-item ${isActive}`;
 
-                // Create Row for the 3 Cards
                 let rowHtml = '<div class="row g-4">';
+                rowHtml += chunk.map(t => {
+                    // ESCAPE strings to safely pass to JS function
+                    const safeContent = t.content.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                    
+                    const actionsHtml = (currentUser && currentUser.id === t.user_id) ? `
+                        <div class="card-actions">
+                            <button onclick="editReview(${t.id}, '${safeContent}', ${t.rating})" 
+                                    class="btn btn-sm btn-light border text-primary rounded-circle shadow-sm" 
+                                    style="width:32px; height:32px; padding:0;" title="Edit">
+                                <i class="bi bi-pencil-fill" style="font-size: 0.8rem;"></i>
+                            </button>
+                            <button onclick="deleteReview(${t.id})" 
+                                    class="btn btn-sm btn-light border text-danger rounded-circle shadow-sm" 
+                                    style="width:32px; height:32px; padding:0;" title="Delete">
+                                <i class="bi bi-trash-fill" style="font-size: 0.8rem;"></i>
+                            </button>
+                        </div>` : '';
 
-                // Map the 3 (or fewer) cards inside this slide
-                rowHtml += chunk.map(t => `
+                    return `
                     <div class="col-md-4">
                         <div class="bg-white rounded-4 shadow-sm p-4 h-100 position-relative">
-
-                            ${currentUser && currentUser.id === t.user_id ?
-                        `<button onclick="deleteReview(${t.id})" class="btn btn-sm text-danger position-absolute top-0 end-0 m-3" style="z-index:10;" title="Delete Review">✕</button>`
-                        : ''}
-
+                            ${actionsHtml}
                             <div class="mb-4">
                                 <div class="text-warning mb-2 small">${'★'.repeat(t.rating)}${'☆'.repeat(5 - t.rating)}</div>
                                 <p class="text-muted">"${t.content}"</p>
                             </div>
-
                             <div class="d-flex align-items-center gap-3 mt-auto">
-                                <div style="border: 2px dashed var(--text-main); border-radius: 50%; padding: 3px; width: 56px; height: 56px; flex-shrink: 0;">
+                                <div style="border: 2px dashed var(--text-main, #0d6efd); border-radius: 50%; padding: 3px; width: 56px; height: 56px; flex-shrink: 0;">
                                     <img src="${t.user.avatar || 'https://ui-avatars.com/api/?name=' + t.user.name}" class="rounded-circle" style="width: 46px; height: 46px; object-fit: cover;">
                                 </div>
                                 <div>
-                                    <h6 class="fw-bold mb-0" style="color: var(--text-main);">${t.user.name}</h6>
+                                    <h6 class="fw-bold mb-0" style="color: var(--text-main, #0d6efd);">${t.user.name}</h6>
                                     <small class="text-muted" style="font-size: 0.8rem;">${new Date(t.created_at).toLocaleDateString()}</small>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                `).join('');
+                    </div>`;
+                }).join('');
 
-                rowHtml += '</div>'; // Close Row
+                rowHtml += '</div>';
                 slideItem.innerHTML = rowHtml;
                 track.appendChild(slideItem);
             }
@@ -227,60 +242,105 @@
         }
     }
 
-    // 5. Submit Review
+    // 3. Form Handling (Create & Edit)
     document.getElementById('testimonial-form').addEventListener('submit', async (e) => {
         e.preventDefault();
+        
+        const id = document.getElementById('edit-id').value; // Check if editing
         const content = document.getElementById('review-content').value;
         const rating = document.getElementById('review-rating').value;
-        const btn = e.target.querySelector('button');
+        const btn = document.getElementById('btn-submit');
 
         btn.disabled = true;
-        btn.innerText = "Posting...";
+        btn.innerText = id ? "Updating..." : "Posting...";
+
+        // Determine URL and Method
+        const url = id ? `${API_URL}/testimonials/${id}` : `${API_URL}/testimonials`;
+        const method = id ? 'PUT' : 'POST';
 
         try {
-            const res = await fetch(`${API_URL}/testimonials`, {
-                method: 'POST',
+            const res = await fetch(url, {
+                method: method,
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({
-                    content,
-                    rating
-                })
+                body: JSON.stringify({ content, rating })
             });
 
             if (res.ok) {
-                document.getElementById('review-content').value = '';
-                document.getElementById('review-form-container').style.display = 'none'; // Hide form
-                fetchTestimonials(); // Refresh grid
-                alert('Review posted!');
+                resetForm();
+                closeForm();
+                await fetchTestimonials();
+                alert(id ? 'Review updated!' : 'Review posted!');
             } else {
-                alert('Error posting review.');
+                const errData = await res.json();
+                alert('Error: ' + (errData.message || 'Something went wrong'));
             }
         } catch (err) {
             alert('Network error.');
         }
 
         btn.disabled = false;
-        btn.innerText = "Post Review";
+        btn.innerText = id ? "Update Review" : "Post Review";
     });
 
-    // 6. Logout
-    function logout() {
-        localStorage.removeItem('api_token');
-        window.location.href = 'https://keeperlibrary.online';
+    // 4. UI Helper Functions
+    window.openCreateForm = function() {
+        resetForm();
+        document.getElementById('review-form-container').style.display = 'flex';
+        // Scroll to form
+        document.getElementById('review-form-container').scrollIntoView({ behavior: 'smooth' });
     }
 
-    // 7. Delete
-    async function deleteReview(id) {
-        if (!confirm("Delete this review?")) return;
-        await fetch(`${API_URL}/testimonials/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
-        fetchTestimonials();
+    window.closeForm = function() {
+        document.getElementById('review-form-container').style.display = 'none';
+        resetForm();
+    }
+
+    // Triggered by the Pencil Icon
+    window.editReview = function(id, content, rating) {
+        document.getElementById('review-form-container').style.display = 'flex';
+        
+        // Populate fields
+        document.getElementById('edit-id').value = id;
+        document.getElementById('review-content').value = content;
+        document.getElementById('review-rating').value = rating;
+
+        // Change UI to Edit Mode
+        document.getElementById('form-title').innerText = "Edit Your Review";
+        document.getElementById('btn-submit').innerText = "Update Review";
+        document.getElementById('btn-cancel-edit').style.display = 'block';
+
+        // Scroll to form
+        document.getElementById('review-form-container').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    window.resetForm = function() {
+        document.getElementById('edit-id').value = '';
+        document.getElementById('review-content').value = '';
+        document.getElementById('review-rating').value = '5';
+        
+        // Reset UI to Create Mode
+        document.getElementById('form-title').innerText = "Write a Review";
+        document.getElementById('btn-submit').innerText = "Post Review";
+        document.getElementById('btn-cancel-edit').style.display = 'none';
+    }
+
+    // 5. Delete Logic
+    window.deleteReview = async function(id) {
+        if (!confirm("Are you sure you want to delete this review?")) return;
+        try {
+            await fetch(`${API_URL}/testimonials/${id}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            fetchTestimonials();
+        } catch (e) { alert("Network error"); }
+    }
+
+    window.logout = function() {
+        localStorage.removeItem('api_token');
+        window.location.href = window.location.pathname; 
     }
 </script>

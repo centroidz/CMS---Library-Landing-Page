@@ -36,6 +36,7 @@ Route::get('/testimonials', [TestimonialController::class, 'index']);
 // 3. Protected Routes (Require Login)
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/auth/me', [AuthController::class, 'me']);
+    Route::put('/testimonials/{id}', [TestimonialController::class, 'update']);
     Route::post('/testimonials', [TestimonialController::class, 'store']);
     Route::delete('/testimonials/{id}', [TestimonialController::class, 'destroy']);
 
