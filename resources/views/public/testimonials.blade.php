@@ -107,15 +107,14 @@
     let token = localStorage.getItem('api_token');
     let currentUser = null;
 
-    // Initialization Logic (Compatible with landing page fetch)
-    window.initTestimonials = async function () {
-        console.log("Initializing Testimonials System...");
-        handleAuthRedirect();
-        await checkUserSession();
-        await fetchTestimonials();
-    };
+    // document.addEventListener('DOMContentLoaded', async () => {
+    //     handleAuthRedirect();
+    //     await checkUserSession();
+    //     fetchTestimonials();
+    //     alert('sa');
+    // });
 
-    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    document.addEventListener('DOMContentLoaded', () => {
         initTestimonials();
     } else {
         document.addEventListener('DOMContentLoaded', initTestimonials);

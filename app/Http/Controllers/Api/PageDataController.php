@@ -12,7 +12,7 @@ class PageDataController extends Controller
     public function landingPageData()
     {
         $page = LandingPage::find(1);
-        $staff = User::where('role', 'admin')->limit(3)->get();
+        $staff = User::where('role', 'admin')->where('is_public', 1)->limit(3)->get();
         $news = Announcement::latest()->limit(5)->get();
 
         if (!$page) {
