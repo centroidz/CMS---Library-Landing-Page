@@ -26,7 +26,7 @@
             /* UPDATED: Darker background color */
             --bg-body: #1a56db; /* Changed from #2A71FE to #1a56db */
             --bg-body-gradient: linear-gradient(135deg, #1a56db 0%, #0d47a1 100%);
-            
+
             --text-main: var(--br-950);
             --text-muted: #64748b;
             --text-light: rgba(255, 255, 255, 0.95); /* Increased opacity for better contrast */
@@ -792,7 +792,7 @@
         }
 
         /* Additional contrast improvements for dark background */
-        .hero-title, 
+        .hero-title,
         .hero-description,
         .section-title {
             text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
@@ -872,7 +872,7 @@
             if (Array.isArray(data.staff)) renderStaff(data.staff);
             if (Array.isArray(data.news)) renderAnnouncements(data.news);
             if (Array.isArray(data.related_links)) renderLinks(data.related_links);
-            
+
             // Apply meet team description if available
             const meetTeamDescEl = document.querySelector('.meet-team-description');
             if (meetTeamDescEl && data.meet_team_description) {

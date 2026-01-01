@@ -16,7 +16,7 @@
                         <h5 class="fw-bold mb-0" id="form-title">Write a Review</h5>
                         <button type="button" class="btn-close" onclick="closeForm()" aria-label="Close"></button>
                     </div>
-                    
+
                     <form id="testimonial-form">
                         <input type="hidden" id="edit-id" value="">
 
@@ -33,9 +33,9 @@
                                 <option value="2">★★☆☆☆ 2 Stars</option>
                                 <option value="1">★☆☆☆☆ 1 Star</option>
                             </select>
-                            
+
                             <div class="d-flex gap-2">
-                                <button type="button" id="btn-cancel-edit" class="btn btn-secondary rounded-pill px-3" 
+                                <button type="button" id="btn-cancel-edit" class="btn btn-secondary rounded-pill px-3"
                                     style="display: none;" onclick="resetForm()">Cancel</button>
                                 <button type="submit" id="btn-submit" class="btn text-white px-4 rounded-pill"
                                     style="background-color: var(--text-main, #0d6efd);">Post Review</button>
@@ -53,7 +53,7 @@
                     <p class="text-muted mt-2">Loading reviews...</p>
                 </div>
             </div>
-            
+
             <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel"
                 data-bs-slide="prev" style="left: -50px;">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -79,7 +79,7 @@
         display: flex;
         gap: 5px;
     }
-    
+
     .carousel-control-prev-icon,
     .carousel-control-next-icon {
         background-color: var(--text-main, #0d6efd);
@@ -101,8 +101,8 @@
 
 <script>
     // CONFIGURATION
-    const API_URL = 'https://keeper.ccs-octa.com/api'; // Or your production URL
-    
+    // const API_URL = 'https://keeper.ccs-octa.com/api'; // Or your production URL
+    const API_URL = 'http://127.0.0.1:8000/api'; // Local Development
     // STATE
     let token = localStorage.getItem('api_token');
     let currentUser = null;
@@ -140,7 +140,7 @@
             if (res.ok) {
                 currentUser = await res.json();
             } else {
-                logout(); 
+                logout();
             }
         } catch (e) { console.error(e); }
         renderAuthUI();
@@ -183,7 +183,7 @@
 
             track.innerHTML = '';
             const chunkSize = 3;
-            
+
             for (let i = 0; i < data.length; i += chunkSize) {
                 const chunk = data.slice(i, i + chunkSize);
                 const isActive = (i === 0) ? 'active' : '';
@@ -195,16 +195,16 @@
                 rowHtml += chunk.map(t => {
                     // ESCAPE strings to safely pass to JS function
                     const safeContent = t.content.replace(/'/g, "\\'").replace(/"/g, '&quot;');
-                    
+
                     const actionsHtml = (currentUser && currentUser.id === t.user_id) ? `
                         <div class="card-actions">
-                            <button onclick="editReview(${t.id}, '${safeContent}', ${t.rating})" 
-                                    class="btn btn-sm btn-light border text-primary rounded-circle shadow-sm" 
+                            <button onclick="editReview(${t.id}, '${safeContent}', ${t.rating})"
+                                    class="btn btn-sm btn-light border text-primary rounded-circle shadow-sm"
                                     style="width:32px; height:32px; padding:0;" title="Edit">
                                 <i class="bi bi-pencil-fill" style="font-size: 0.8rem;"></i>
                             </button>
-                            <button onclick="deleteReview(${t.id})" 
-                                    class="btn btn-sm btn-light border text-danger rounded-circle shadow-sm" 
+                            <button onclick="deleteReview(${t.id})"
+                                    class="btn btn-sm btn-light border text-danger rounded-circle shadow-sm"
                                     style="width:32px; height:32px; padding:0;" title="Delete">
                                 <i class="bi bi-trash-fill" style="font-size: 0.8rem;"></i>
                             </button>
@@ -245,7 +245,7 @@
     // 3. Form Handling (Create & Edit)
     document.getElementById('testimonial-form').addEventListener('submit', async (e) => {
         e.preventDefault();
-        
+
         const id = document.getElementById('edit-id').value; // Check if editing
         const content = document.getElementById('review-content').value;
         const rating = document.getElementById('review-rating').value;
@@ -286,22 +286,22 @@
     });
 
     // 4. UI Helper Functions
-    window.openCreateForm = function() {
+    window.openCreateForm = function () {
         resetForm();
         document.getElementById('review-form-container').style.display = 'flex';
         // Scroll to form
         document.getElementById('review-form-container').scrollIntoView({ behavior: 'smooth' });
     }
 
-    window.closeForm = function() {
+    window.closeForm = function () {
         document.getElementById('review-form-container').style.display = 'none';
         resetForm();
     }
 
     // Triggered by the Pencil Icon
-    window.editReview = function(id, content, rating) {
+    window.editReview = function (id, content, rating) {
         document.getElementById('review-form-container').style.display = 'flex';
-        
+
         // Populate fields
         document.getElementById('edit-id').value = id;
         document.getElementById('review-content').value = content;
@@ -316,11 +316,11 @@
         document.getElementById('review-form-container').scrollIntoView({ behavior: 'smooth' });
     }
 
-    window.resetForm = function() {
+    window.resetForm = function () {
         document.getElementById('edit-id').value = '';
         document.getElementById('review-content').value = '';
         document.getElementById('review-rating').value = '5';
-        
+
         // Reset UI to Create Mode
         document.getElementById('form-title').innerText = "Write a Review";
         document.getElementById('btn-submit').innerText = "Post Review";
@@ -328,7 +328,7 @@
     }
 
     // 5. Delete Logic
-    window.deleteReview = async function(id) {
+    window.deleteReview = async function (id) {
         if (!confirm("Are you sure you want to delete this review?")) return;
         try {
             await fetch(`${API_URL}/testimonials/${id}`, {
@@ -339,8 +339,8 @@
         } catch (e) { alert("Network error"); }
     }
 
-    window.logout = function() {
+    window.logout = function () {
         localStorage.removeItem('api_token');
-        window.location.href = window.location.pathname; 
+        window.location.href = window.location.pathname;
     }
 </script>
