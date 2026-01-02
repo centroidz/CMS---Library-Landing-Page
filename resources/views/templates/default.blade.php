@@ -76,7 +76,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            z-index: -1;
+            z-index: 0;
         }
 
         .hero-overlay {
@@ -86,11 +86,13 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
+            z-index: 1;
         }
 
         .hero-content {
+            position: relative;
             max-width: 650px;
+            z-index: 2;
         }
 
         .hero-title {

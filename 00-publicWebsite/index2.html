@@ -8,14 +8,21 @@
         <style>
             @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Inter:wght@300;600&display=swap");
 
+            :root {
+                --primary-dark: #0f172a;
+                --accent-gold: #c2a35d;
+                --text-light: #f8fafc;
+                --loader-bg: rgba(255, 255, 255, 0.1);
+            }
+
             body,
             html {
                 margin: 0;
                 padding: 0;
                 height: 100%;
+                background-color: #f8faff;
                 font-family: "Inter", sans-serif;
                 overflow-x: hidden;
-                background-color: #f8faff;
             }
 
             /* SPLASH WRAPPER */
@@ -40,6 +47,7 @@
                 z-index: 2;
                 box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.5);
             }
+
             .left-panel {
                 border-right: 1px solid rgba(194, 163, 93, 0.2);
             }
@@ -62,7 +70,7 @@
                 font-family: "Playfair Display", serif;
                 font-size: 4.5rem;
                 font-weight: 700;
-                color: #c2a35d;
+                color: var(--accent-gold);
                 margin: 0;
                 line-height: 1;
                 letter-spacing: -1px;
@@ -74,7 +82,7 @@
                 font-weight: 300;
                 text-transform: uppercase;
                 letter-spacing: 8px;
-                color: #f8fafc;
+                color: var(--text-light);
                 margin-top: 10px;
                 opacity: 0.8;
             }
@@ -83,7 +91,7 @@
             .book-icon {
                 width: 40px;
                 height: 2px;
-                background: #c2a35d;
+                background: var(--accent-gold);
                 margin: 0 auto 20px;
                 position: relative;
             }
@@ -93,7 +101,7 @@
                 position: absolute;
                 width: 15px;
                 height: 2px;
-                background: #c2a35d;
+                background: var(--accent-gold);
                 top: -6px;
             }
             .book-icon::before {
@@ -109,48 +117,51 @@
             .loader-bar-container {
                 width: 240px;
                 height: 2px;
-                background: rgba(255, 255, 255, 0.1);
+                background: var(--loader-bg);
                 margin: 30px auto;
                 position: relative;
                 overflow: hidden;
                 border-radius: 4px;
             }
+
             .loader-bar-fill {
                 height: 100%;
                 width: 0%;
-                background: #c2a35d;
+                background: var(--accent-gold);
                 box-shadow: 0 0 10px rgba(194, 163, 93, 0.5);
             }
 
-            /* APP CONTAINER */
             #app-container {
+                position: relative;
                 width: 100%;
                 min-height: 100vh;
-                display: none; /* hidden until hydration complete */
+                z-index: 1;
             }
         </style>
     </head>
     <body>
-        <!-- SPLASH -->
         <div id="splash-wrapper">
             <div class="cover-panel left-panel"></div>
+
             <div class="splash-content">
                 <div class="book-icon"></div>
-                <h1 class="keeper-text">Keeper</h1>
-                <div class="library-text">Library</div>
+                <div class="logo-container">
+                    <h1 class="keeper-text">Keeper</h1>
+                    <div class="library-text">Library</div>
+                </div>
                 <div class="loader-bar-container">
                     <div class="loader-bar-fill"></div>
                 </div>
             </div>
+
             <div class="cover-panel right-panel"></div>
         </div>
 
-        <!-- APP -->
         <div id="app-container"></div>
 
         <script>
-            // URLs and template routes
-            const ADMIN_BASE_URL = "https://keeper.ccs-octa.com"; // Change to production
+            // RESTORED: Production URL and Route Mapping
+            const ADMIN_BASE_URL = "https://keeper.ccs-octa.com";
             const API_ENDPOINT = `${ADMIN_BASE_URL}/api/page/landingPage`;
 
             const TEMPLATE_ROUTES = {
@@ -161,11 +172,11 @@
                 stacked: `${ADMIN_BASE_URL}/templates/stacked`,
             };
 
-            // Load website (Hydration logic preserved)
             async function initializeWebsite() {
                 const container = document.getElementById("app-container");
+                const loader = document.getElementById("loader");
 
-                // 1. Splash entrance animation
+                // 1. GSAP: Initial Logo Entrance
                 gsap.from(".keeper-text", {
                     y: 30,
                     opacity: 0,
@@ -177,6 +188,8 @@
                     duration: 1.5,
                     delay: 0.3,
                 });
+
+                // 2. GSAP: Start Progress Bar
                 gsap.to(".loader-bar-fill", {
                     width: "100%",
                     duration: 2,
@@ -184,56 +197,61 @@
                 });
 
                 try {
-                    // 2. Fetch page data
+                    // 3. Fetch JSON Data
                     const dataResponse = await fetch(API_ENDPOINT);
                     if (!dataResponse.ok) throw new Error("API Fetch Failed");
                     const pageData = await dataResponse.json();
 
-                    // 3. Determine template URL
+                    // 4. Determine Template URL (RESTORED logic)
                     const layoutKey = pageData.layout || "default";
                     const templateUrl =
                         TEMPLATE_ROUTES[layoutKey] ||
                         TEMPLATE_ROUTES["default"];
 
-                    // 4. Fetch template HTML
+                    // 5. Fetch HTML Template
                     const templateResponse = await fetch(templateUrl);
                     if (!templateResponse.ok)
                         throw new Error("Template Fetch Failed");
                     const htmlOutput = await templateResponse.text();
 
-                    // 5. Inject into container
+                    // 6. Inject Content
                     container.innerHTML = htmlOutput;
 
-                    // 6. Re-run scripts for hydration
+                    // 7. HYDRATION: Re-run scripts (Crucial for functionality)
                     const scripts = container.querySelectorAll("script");
                     scripts.forEach((oldScript) => {
                         const newScript = document.createElement("script");
-                        Array.from(oldScript.attributes).forEach((attr) =>
-                            newScript.setAttribute(attr.name, attr.value)
-                        );
+                        Array.from(oldScript.attributes).forEach((attr) => {
+                            newScript.setAttribute(attr.name, attr.value);
+                        });
                         newScript.textContent = oldScript.textContent;
                         document.body.appendChild(newScript);
                         oldScript.remove();
                     });
 
-                    // 7. Finalize UI after slight delay
+                    // 8. Finalize UI and Open Doors
                     setTimeout(() => {
                         if (typeof window.applyPageData === "function") {
                             window.applyPageData(pageData);
                         }
+
+                        // Show container before opening doors
                         container.style.display = "block";
-                        // Animate splash doors out
+                        if (loader) loader.style.display = "none";
+
                         openDoors();
                     }, 800);
                 } catch (error) {
                     console.error("Hydration Error:", error);
-                    document.body.innerHTML = `<div style="padding:50px;text-align:center;color:white;background:#111;height:100vh;">
-      <h1>System Offline</h1><p>${error.message}</p>
-    </div>`;
+                    // RESTORED: Error UI
+                    document.body.innerHTML = `
+                <div style="padding: 50px; text-align: center; color: white; background: #111; height: 100vh;">
+                  <h1>System Offline</h1>
+                  <p>Error: ${error.message}</p>
+                </div>`;
                 }
             }
 
-            // 8. Splash doors animation
             function openDoors() {
                 const tl = gsap.timeline();
                 tl.to(".splash-content", {
