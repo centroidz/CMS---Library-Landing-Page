@@ -46,6 +46,22 @@
             </div>
         </div>
 
+        <div class="d-flex justify-content-end mb-4 px-2">
+            <div class="d-flex align-items-center bg-light rounded-pill px-3 py-1 shadow-sm border">
+                <label for="sort-testimonials" class="me-2 text-muted small fw-bold text-nowrap">
+                    <i class="bi bi-sort-down"></i> Sort By:
+                </label>
+                <select id="sort-testimonials" 
+                        class="form-select form-select-sm border-0 bg-transparent text-dark fw-bold" 
+                        style="width: auto; cursor: pointer; box-shadow: none;" 
+                        onchange="fetchTestimonials()">
+                    <option value="latest">Newest First</option>
+                    <option value="rating_desc">Highest Rated</option>
+                    <option value="rating_asc">Lowest Rated</option>
+                </select>
+            </div>
+        </div>
+
         <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="8000">
             <div class="carousel-inner" id="testimonials-track">
                 <div class="text-center py-5">
@@ -71,6 +87,7 @@
 
 <style>
     /* Styling for the Edit/Delete buttons on the card */
+
     .card-actions {
         position: absolute;
         top: 15px;
@@ -172,7 +189,11 @@
     // 2. Fetching Data
     async function fetchTestimonials() {
         try {
-            const res = await fetch(`${API_URL}/testimonials`);
+            // Get the current sort value (default to 'latest' if element missing)
+            const sortValue = document.getElementById('sort-testimonials')?.value || 'latest';
+            
+            // Append sort param to URL
+            const res = await fetch(`${API_URL}/testimonials?sort=${sortValue}`);
             const data = await res.json();
             const track = document.getElementById('testimonials-track');
 
@@ -181,30 +202,36 @@
                 return;
             }
 
+            // Clear loading spinner
             track.innerHTML = '';
-            const chunkSize = 3;
 
+            // LOGIC: Chunk data into groups of 3
+            const chunkSize = 3;
             for (let i = 0; i < data.length; i += chunkSize) {
                 const chunk = data.slice(i, i + chunkSize);
+                
+                // First item must be active
                 const isActive = (i === 0) ? 'active' : '';
 
                 const slideItem = document.createElement('div');
                 slideItem.className = `carousel-item ${isActive}`;
 
                 let rowHtml = '<div class="row g-4">';
+                
                 rowHtml += chunk.map(t => {
-                    // ESCAPE strings to safely pass to JS function
+                    // Escape content for JS
                     const safeContent = t.content.replace(/'/g, "\\'").replace(/"/g, '&quot;');
 
+                    // Action Buttons (Edit/Delete)
                     const actionsHtml = (currentUser && currentUser.id === t.user_id) ? `
                         <div class="card-actions">
-                            <button onclick="editReview(${t.id}, '${safeContent}', ${t.rating})"
-                                    class="btn btn-sm btn-light border text-primary rounded-circle shadow-sm"
+                             <button onclick="editReview(${t.id}, '${safeContent}', ${t.rating})" 
+                                    class="btn btn-sm btn-light border text-primary rounded-circle shadow-sm" 
                                     style="width:32px; height:32px; padding:0;" title="Edit">
                                 <i class="bi bi-pencil-fill" style="font-size: 0.8rem;"></i>
                             </button>
-                            <button onclick="deleteReview(${t.id})"
-                                    class="btn btn-sm btn-light border text-danger rounded-circle shadow-sm"
+                            <button onclick="deleteReview(${t.id})" 
+                                    class="btn btn-sm btn-light border text-danger rounded-circle shadow-sm" 
                                     style="width:32px; height:32px; padding:0;" title="Delete">
                                 <i class="bi bi-trash-fill" style="font-size: 0.8rem;"></i>
                             </button>
@@ -231,14 +258,15 @@
                     </div>`;
                 }).join('');
 
-                rowHtml += '</div>';
+                rowHtml += '</div>'; // Close Row
                 slideItem.innerHTML = rowHtml;
                 track.appendChild(slideItem);
             }
 
         } catch (error) {
             console.error(error);
-            document.getElementById('testimonials-track').innerHTML = '<div class="text-center text-danger py-5">Failed to load reviews.</div>';
+            const track = document.getElementById('testimonials-track');
+            if(track) track.innerHTML = '<div class="text-center text-danger py-5">Failed to load reviews.</div>';
         }
     }
 

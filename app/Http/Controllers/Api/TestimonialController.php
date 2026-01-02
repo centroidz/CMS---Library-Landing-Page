@@ -10,10 +10,24 @@ use Illuminate\Support\Facades\Auth;
 class TestimonialController extends Controller
 {
     // Public: Get all testimonials
-    public function index()
+    public function index(Request $request)
     {
-        // Eager load user to show name/avatar
-        return Testimonial::with('user:id,name,avatar')->latest()->get();
+        $query = Testimonial::with('user:id,name,avatar');
+
+        // Check for sort parameter
+        switch ($request->sort) {
+            case 'rating_desc':
+                $query->orderBy('rating', 'desc'); // 5 Stars first
+                break;
+            case 'rating_asc':
+                $query->orderBy('rating', 'asc');  // 1 Star first
+                break;
+            default:
+                $query->latest(); // Default: Newest first
+                break;
+        }
+
+        return $query->get();
     }
 
     // Protected: Create
