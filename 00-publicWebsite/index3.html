@@ -227,12 +227,23 @@
                     }, 800);
                 } catch (error) {
                     console.error("Hydration Error:", error);
-                    document.body.innerHTML = `<div style="padding:50px;text-align:center;color:white;background:#111;height:100vh;">
-      <h1>System Offline</h1><p>${error.message}</p>
-    </div>`;
+
+                    // CHANGE: Stop the loader and show error inside the splash screen
+                    gsap.killTweensOf(".loader-bar-fill");
+
+                    const splashContent =
+                        document.querySelector(".splash-content");
+                    splashContent.innerHTML = `
+            <div style="color: #ff6b6b; margin-top: 20px; font-family: 'Inter', sans-serif;">
+              <h2 style="text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px;">System Offline</h2>
+              <p style="opacity: 0.7; font-size: 0.9rem;">${error.message}</p>
+              <button onclick="window.location.reload()" style="background: transparent; border: 1px solid #c2a35d; color: #c2a35d; padding: 8px 16px; cursor: pointer; margin-top: 15px; border-radius: 4px;">Retry Connection</button>
+            </div>
+          `;
+
+                    // Doors will never open because openDoors() is not called here
                 }
             }
-
             // 8. Splash doors animation
             function openDoors() {
                 const tl = gsap.timeline();
